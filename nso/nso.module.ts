@@ -37,11 +37,11 @@ export default angular
 
 ////
 
-function SearchService(){
+function SearchService() {
   this.searchTerm = "";
 }
 
-function RootController($scope, $injector){
+function RootController($scope, $injector) {
   console.log("RootController");
   const $state = $injector.get("$state");
   const SearchService = $injector.get("SearchService");
@@ -59,19 +59,21 @@ function RootController($scope, $injector){
 
   this.toggleLayout = function(){
     this._layoutIndex = LAYOUTS.indexOf(this.networkOptions) + 1;
-    if (this._layoutIndex >= LAYOUTS.length) this._layoutIndex = 0;
+    if (this._layoutIndex >= LAYOUTS.length) {
+      this._layoutIndex = 0;
+    }
     this.networkOptions = LAYOUTS[this._layoutIndex];
   };
 
   $scope.$watch("rootCtrl.SearchService.searchTerm", function(newValue, oldValue){
-    if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)){
+    if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
       return;
     }
     $state.go("root.search", { moduleName: newValue});
   });
 }
 
-function resolveModuleName($injector, $stateParams){
+function resolveModuleName($injector, $stateParams) {
   console.log("resolveModuleName");
   // WARN: $stateParams must be in the arguments here
   const SearchService = $injector.get("SearchService");
@@ -95,7 +97,7 @@ function nsoConfig($injector) {
   $urlRouterProvider.deferIntercept();
 }
 
-function urlReloadingRun($injector){
+function urlReloadingRun($injector) {
   const $rootScope = $injector.get("$rootScope");
   const $state = $injector.get("$state");
   const $urlRouter = $injector.get("$urlRouter");
@@ -116,7 +118,7 @@ function urlReloadingRun($injector){
 
     console.log("$locationChangeSuccess", $state.current, newUrl, oldUrl);
 
-    if ($state.is(STATES["root.search"])){
+    if ($state.is(STATES["root.search"])) {
       return;
     }
 
@@ -127,7 +129,7 @@ function urlReloadingRun($injector){
   $urlRouter.listen();
 }
 
-function exposeToRootScopeRun($injector){
+function exposeToRootScopeRun($injector) {
   const $rootScope = $injector.get("$rootScope");
   $rootScope.$state = $injector.get("$state");
 }

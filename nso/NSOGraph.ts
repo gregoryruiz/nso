@@ -1,15 +1,14 @@
 //
 
-import _ from 'lodash';
-import vis from 'vis';
-import jspmFetcher from './jspmFetcher';
+import _ from "lodash";
+import vis from "vis";
+import jspmFetcher from "./jspmFetcher";
 import defaultOptions, {
   NODE_DEFAULT_COLOR,
-  NODE_ROOT_COLOR,
   NODE_FAIL_COLOR,
-  NODE_LOADING_COLOR
-}
-from './options';
+  NODE_LOADING_COLOR,
+  NODE_ROOT_COLOR,
+} from "./options";
 
 export default class NSOGraph {
   constructor(element) {
@@ -17,7 +16,7 @@ export default class NSOGraph {
     this.labelStore = [];
     this.data = {
       nodes: new vis.DataSet({}),
-      edges: new vis.DataSet({})
+      edges: new vis.DataSet({}),
     };
 
     this.getScale = function(node){
@@ -27,13 +26,13 @@ export default class NSOGraph {
     this.network = new vis.Network(element, this.data, this.networkOptions);
 
     this.network.on("stabilized", () => {
-      console.log('stabilized');
+      console.log("stabilized");
       this.network.fit();
     });
 
   }
-  
-  setNetworkOptions(options){
+
+  setNetworkOptions(options) {
     this.network.setOptions(Object.assign(this.networkOptions, options));
   }
 
@@ -45,14 +44,14 @@ export default class NSOGraph {
       id: 0,
       mass: 1,
       label: rootModuleName,
-      color: NODE_LOADING_COLOR
+      color: NODE_LOADING_COLOR,
     };
 
     this.data.nodes.add(rootNode);
 
     this.dependencyFetching(rootNode)
       .then(() => {
-        console.log('Alllllllllllllllllllll doooooooooooooooone !', ...arguments);
+        console.log("Alllllllllllllllllllll doooooooooooooooone !", ...arguments);
         this.network.fit();
       });
   }
@@ -63,7 +62,7 @@ export default class NSOGraph {
       .then(jspmFetcher)
       .then((pkg) => {
         if (!this.data) {
-          throw new Error('Cancel Everything Dude ! STOP !');
+          throw new Error("Cancel Everything Dude ! STOP !");
         }
         return pkg;
       })
@@ -71,14 +70,14 @@ export default class NSOGraph {
         return this._describeNewData(pkg.dependencies)
           .then(({
             nodes: newNodes,
-            edges: newEdges
+            edges: newEdges,
           }) => {
             newNodes = newNodes.map((node) => {
               node._depth = fetchingDepth;
               node._dependentCount = 0;
               node._dependencyCount = 0;
               node.color = NODE_LOADING_COLOR;
-              
+
               return node;
             });
             this.data.nodes.add(newNodes);
@@ -87,47 +86,47 @@ export default class NSOGraph {
                 const depNode = this.data.nodes.get(edge.to);
                 node._dependencyCount++;
                 depNode._dependentCount++;
-               
+
                 const nodeScale = this.getScale(node);
                 node.mass = 1 + nodeScale;
                 node.value = nodeScale;
-                
+
                 const depNodeScale = this.getScale(depNode);
                 depNode.mass = 1 + depNodeScale;
                 depNode.value = depNodeScale;
-                
+
                 this.data.nodes.update(node);
                 this.data.nodes.update(depNode);
-                
+
                 edge.from = node.id;
                 return edge;
-              })
+              }),
             );
-            return newNodes
+            return newNodes;
           });
       })
       .then((nodes) => {
         return Promise
           .all(nodes.map(
             ({
-              id
-            }) => this.dependencyFetching(this.data.nodes.get(id))
-          ))
+              id,
+            }) => this.dependencyFetching(this.data.nodes.get(id)),
+          ));
       })
       .then(() => {
         this.data.nodes.update({
           id: node.id,
-          color: node.id === 0 ? NODE_ROOT_COLOR : NODE_DEFAULT_COLOR
+          color: node.id === 0 ? NODE_ROOT_COLOR : NODE_DEFAULT_COLOR,
         });
       })
       .catch((e) => {
-        console.warn('fetching fail\n', e);
+        console.warn("fetching fail\n", e);
         this.data.nodes.update({
           id: node.id,
-          color: NODE_FAIL_COLOR
+          color: NODE_FAIL_COLOR,
         });
         return {};
-      })
+      });
 
   }
 
@@ -143,19 +142,19 @@ export default class NSOGraph {
               nodeId = this.labelStore.push(dependencyName);
               memo.nodes.push({
                 id: nodeId,
-                label: dependencyName
+                label: dependencyName,
               });
             }
 
             memo.edges.push({
               to: nodeId,
-              arrows: 'to'
+              arrows: "to",
             });
 
             return memo;
           }, {
             nodes: [],
-            edges: []
+            edges: [],
           });
       });
   }
