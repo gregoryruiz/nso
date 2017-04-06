@@ -4,5 +4,8 @@
   ],
   "plugins": [
     "transform-es2015-modules-systemjs"
+  ],
+  "ignore": [
+    "tsDist"
   ]
 }

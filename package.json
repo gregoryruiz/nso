@@ -5,6 +5,7 @@
   "main": "bootstrap.js",
   "scripts": {
     "watch": "concurrently \"babel *.js -d dist -w\" \"babel nso -d dist/nso -w\" \"live-server\" ",
+    "watchts": "concurrently \"tsc -w\" \"live-server\"",
     "start": "live-server"
   },
   "author": "Douglas Duteil",
@@ -14,6 +15,7 @@
     "babel-plugin-transform-es2015-modules-systemjs": "^6.23.0",
     "babel-preset-es2015": "^6.24.0",
     "concurrently": "^3.4.0",
-    "live-server": "^1.2.0"
+    "live-server": "^1.2.0",
+    "typescript": "^2.2.2"
   }
 }

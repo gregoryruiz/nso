@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "target": "es2015",
+        "noImplicitAny": false,
+        "sourceMap": false,
+        "allowJs": true,
+        "outDir": "tsDist"
+    },
+    "exclude": [
+        "dist",
+        "node_modules",
+        "tsDist"
+    ]
+}
