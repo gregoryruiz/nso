@@ -76,9 +76,3 @@ dist/*
 !dist/nso/
 dist/nso/*
 !dist/nso/nso.index.html
-
-# Output of 'npm run watchts'
-tsDist/*
-!tsDist/nso/
-tsDist/nso/*
-!tsDist/nso/nso.index.html
