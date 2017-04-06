@@ -1,0 +1,34 @@
+.omnibox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  margin: 1rem; }
+
+.searchbox {
+  background-color: #fff;
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 42px;
+  outline: none;
+  max-width: 90%;
+  min-width: 300px;
+  vertical-align: top; }
+  .searchbox input {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-appearance: none;
+    -webkit-rtl-ordering: logical;
+    -webkit-user-select: text;
+    border: none;
+    padding: 0px 10px;
+    outline: none;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 300; }
