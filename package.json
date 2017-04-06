@@ -5,7 +5,8 @@
   "main": "bootstrap.js",
   "scripts": {
     "watch": "concurrently \"tsc -w\" \"live-server\"",
-    "start": "live-server"
+    "start": "live-server",
+    "sass": "node-sass ./nso/ -o ./nso/ && node-sass base.scss base.css"
   },
   "author": "Douglas Duteil",
   "license": "MIT",
