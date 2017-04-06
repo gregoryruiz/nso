@@ -1,0 +1,18 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial,sans-serif;
+  height: 100%;
+}
+
+body {  
+  -ms-touch-action: none;
+  overflow: hidden;
+  background-color: hsl(0, 0%, 96%);
+}
+
+.wf-active {
+  &, input{
+    font-family: 'Roboto', Arial,sans-serif;;
+  }
+}

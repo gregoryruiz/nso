@@ -1,2 +1,2 @@
 # nso
-npm space observatory
+>npm space observatory
