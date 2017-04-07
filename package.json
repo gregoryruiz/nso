@@ -14,5 +14,14 @@
     "concurrently": "^3.4.0",
     "live-server": "^1.2.0",
     "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "angular": "^1.6.1",
+    "angular-ui-router": "^0.4.2",
+    "lodash": "^3.10.0",
+    "systemjs": "^0.20.12",
+    "systemjs-plugin-json": "^0.3.0",
+    "systemjs-plugin-text": "0.0.9",
+    "vis": "^4.7.0"
   }
 }
