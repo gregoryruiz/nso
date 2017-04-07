@@ -16,6 +16,11 @@
     "typescript": "^2.2.2"
   },
   "dependencies": {
+    "@types/angular": "^1.6.14",
+    "@types/angular-ui-router": "^1.1.36",
+    "@types/lodash": "^4.14.61",
+    "@types/systemjs": "^0.20.2",
+    "@types/vis": "^4.18.0",
     "angular": "^1.6.1",
     "angular-ui-router": "^0.4.2",
     "lodash": "^3.10.0",
