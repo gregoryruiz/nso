@@ -24,8 +24,8 @@ function nsoGraphDirective() {
   function nsoGraphDirectiveLink(scope, iElement, iAttrs) {
     let graph = new NSOGraph(iElement[0]);
 
-    iAttrs.$observe("moduleName", function(newValue, oldValue){
-      if (_.isEmpty(newValue) || _.isEqual(newValue)) {
+    iAttrs.$observe("moduleName", function(newValue, oldValue) {
+      if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
         return;
       }
 

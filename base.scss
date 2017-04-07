@@ -5,7 +5,8 @@ html, body {
   height: 100%;
 }
 
-body {  
+body {
+  touch-action: none;
   -ms-touch-action: none;
   overflow: hidden;
   background-color: hsl(0, 0%, 96%);

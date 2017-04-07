@@ -43,9 +43,7 @@ export default {
       face: "Roboto",
     },
     scaling: {
-      customScalingFunction: function(min, max, total, value) {
-        return value / max;
-      },
+      customScalingFunction: (min, max, total, value) => value / max,
       min: 10,
       max: 50,
     },
