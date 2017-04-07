@@ -1,5 +1,3 @@
-//
-
 import _ from "lodash";
 
 const PACKAGE_FILE_NAME = "package.json";

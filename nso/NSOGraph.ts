@@ -1,5 +1,3 @@
-//
-
 import _ from "lodash";
 import vis from "vis";
 import jspmFetcher from "./jspmFetcher";
@@ -173,7 +171,3 @@ export default class NSOGraph {
     this.network = null;
   }
 }
-
-//
-//
-//

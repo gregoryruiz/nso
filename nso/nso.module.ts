@@ -1,11 +1,7 @@
-//
-
 import angular from "angular";
 import "angular-ui-router";
 import _ from "lodash";
-
 import nsoIndexHTMLTemplate from "./nso.index.html";
-
 import NsoGraphDirective from "./nsoGraph.directive";
 
 const STATES = {
@@ -34,8 +30,6 @@ export default angular
   .run(exposeToRootScopeRun)
   .run(urlReloadingRun)
   .name;
-
-////
 
 function SearchService() {
   this.searchTerm = "";
@@ -133,7 +127,3 @@ function exposeToRootScopeRun($injector) {
   const $rootScope = $injector.get("$rootScope");
   $rootScope.$state = $injector.get("$state");
 }
-
-//
-//
-//

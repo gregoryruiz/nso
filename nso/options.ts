@@ -1,5 +1,3 @@
-//
-
 export const COLOR = {
   WHITE: "#fff",
   GRAY_LIGHT: "#ccc",
@@ -34,7 +32,6 @@ export const NODE_ROOT_COLOR = {
 
 export default {
 
-  //
   nodes: {
     shape: "dot",
     color: Object.assign({},
@@ -55,7 +52,6 @@ export default {
     size: 10,
   },
 
-  //
   edges: {
     arrows: {
       to: {
@@ -73,7 +69,6 @@ export default {
     },
   },
 
-  //
   physics: {
     barnesHut: {
      springLength: 10,
@@ -82,13 +77,9 @@ export default {
     solver: "barnesHut",
   },
 
-  //
   interaction: {
     tooltipDelay: 200,
     hideEdgesOnDrag: true,
   },
 };
 
-//
-//
-//

@@ -1,6 +1,5 @@
 import angular from "angular";
 import _ from "lodash";
-
 import NSOGraph from "./NSOGraph";
 
 export default angular
@@ -22,8 +21,6 @@ function nsoGraphDirective() {
     link: nsoGraphDirectiveLink,
   };
 
-  ///
-
   function nsoGraphDirectiveLink(scope, iElement, iAttrs) {
     let graph = new NSOGraph(iElement[0]);
 
@@ -37,7 +34,7 @@ function nsoGraphDirective() {
 
     });
 
-    iAttrs.$observe("nodeScale", function(newValue, oldValue){
+    iAttrs.$observe("nodeScale", function(newValue, oldValue) {
       if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
         return;
       }
@@ -45,7 +42,7 @@ function nsoGraphDirective() {
       // console.log('Scale with', graph.network, newValue)
     });
 
-    scope.$watch(iAttrs["networkOptions"], function(newValue, oldValue){
+    scope.$watch(iAttrs["networkOptions"], function(newValue, oldValue) {
       if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
         return;
       }
@@ -56,7 +53,3 @@ function nsoGraphDirective() {
     scope.$on("$destroy", graph.destroy);
   }
 }
-
-//
-//
-//
