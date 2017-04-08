@@ -1,0 +1,17 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/*.js": {"when": "$(basename).ts"},
+        "**/*.css": {"when": "$(basename).scss"},
+        "**/*.map": {"when": "$(basename).map"}
+    },
+    "tslint.enable": true,
+    "tslint.autoFixOnSave": true,
+    "tslint.ignoreDefinitionFiles": true,
+    "tslint.exclude": [
+        "/node_modules"
+    ],
+    "typescript.tsdk": "./node_modules/typescript/lib"
+}

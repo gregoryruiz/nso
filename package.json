@@ -9,10 +9,14 @@
     "sass": "node-sass ./nso/ -o ./nso/ && node-sass base.scss base.css"
   },
   "author": "Douglas Duteil",
+  "contributors": [
+    "Grégory Ruiz <gregory.ruiz@gmail.com> (https://github.com/gregoryruiz)"
+  ],
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^3.4.0",
     "live-server": "^1.2.0",
+    "tslint": "^5.0.0",
     "typescript": "^2.2.2"
   },
   "dependencies": {
