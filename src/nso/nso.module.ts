@@ -1,8 +1,11 @@
-import angular from "angular";
+import * as angular from "angular";
 import "angular-ui-router";
-import _ from "lodash";
-import nsoIndexHTMLTemplate from "./nso.index.html";
+import * as _ from "lodash";
+import nsoIndexHTMLTemplate from "./nso.module.html";
 import NsoGraphDirective from "./nsoGraph.directive";
+
+import "./nso-app.scss";
+import "./omnibox.scss";
 
 const STATES = {
   "root": {
