@@ -22,7 +22,7 @@ exports.default = {
 
   entry: {
     webfont: './src/webfont.ts',
-    bootstrap: './src/bootstrap.ts'
+    bootstrap: ['core-js', './src/bootstrap.ts']
   },
 
   //
