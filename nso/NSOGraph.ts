@@ -1,25 +1,55 @@
 import _ from "lodash";
 import vis from "vis";
-import jspmFetcher from "./jspmFetcher";
+import {
+  getPackageInfosAsync,
+  JspmPackageInfo,
+} from "./jspmFetcher";
 import defaultOptions, {
   NODE_DEFAULT_COLOR,
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
   NODE_ROOT_COLOR,
+  NSOColor,
 } from "./options";
 
+/**
+ * NSOData
+ */
+class NSOData implements vis.Data {
+  public nodes?: vis.DataSet<INsoNode>;
+  public edges?: vis.DataSet<vis.Edge>;
+
+  constructor() {
+    this.nodes = new vis.DataSet<INsoNode>();
+    this.edges = new vis.DataSet<vis.Edge>();
+  }
+}
+
+/**
+ * NSONode
+ */
+interface INsoNode extends vis.Node {
+      _depth?: number;
+      _dependencyCount?: number;
+      _dependentCount?: number;
+      mass?: number;
+      color?: NSOColor;
+      value?: number;
+}
+
 export default class NSOGraph {
-  constructor(element) {
+  public network: vis.Network;
+  private getScale: (node: INsoNode) => number;
+  private data: NSOData;
+  private labelStore: string[];
+  private networkOptions: vis.Options;
+
+  constructor(element: HTMLElement) {
 
     this.labelStore = [];
-    this.data = {
-      nodes: new vis.DataSet({}),
-      edges: new vis.DataSet({}),
-    };
+    this.data = new NSOData();
 
-    this.getScale = function(node){
-      return node._dependencyCount + node._dependentCount;
-    };
+    this.getScale = (node) => node._dependencyCount + node._dependentCount;
     this.networkOptions = Object.assign({}, defaultOptions);
     this.network = new vis.Network(element, this.data, this.networkOptions);
 
@@ -30,19 +60,19 @@ export default class NSOGraph {
 
   }
 
-  setNetworkOptions(options) {
+  public setNetworkOptions(options: vis.Options) {
     this.network.setOptions(Object.assign(this.networkOptions, options));
   }
 
-  drawDependenciesFrom(rootModuleName) {
-    const rootNode = {
-      _depth: 0,
+  public drawDependenciesFrom(rootModuleName) {
+    const rootNode: INsoNode = {
       _dependencyCount: 0,
       _dependentCount: 0,
-      id: 0,
-      mass: 1,
-      label: rootModuleName,
+      _depth: 0,
       color: NODE_LOADING_COLOR,
+      id: 0,
+      label: rootModuleName,
+      mass: 1,
     };
 
     this.data.nodes.add(rootNode);
@@ -54,10 +84,20 @@ export default class NSOGraph {
       });
   }
 
-  dependencyFetching(node) {
+  public destroy() {
+    this.clear();
+
+    this.data = null;
+    this.network.destroy();
+    this.network = null;
+  }
+
+  private dependencyFetching(node: INsoNode) {
     const fetchingDepth = node._depth + 1;
     return Promise.resolve(node)
-      .then(jspmFetcher)
+      .then((res) => {
+        return getPackageInfosAsync(res.label);
+      })
       .then((pkg) => {
         if (!this.data) {
           throw new Error("Cancel Everything Dude ! STOP !");
@@ -113,22 +153,22 @@ export default class NSOGraph {
       })
       .then(() => {
         this.data.nodes.update({
-          id: node.id,
           color: node.id === 0 ? NODE_ROOT_COLOR : NODE_DEFAULT_COLOR,
+          id: node.id,
         });
       })
       .catch((e) => {
         console.warn("fetching fail\n", e);
         this.data.nodes.update({
-          id: node.id,
           color: NODE_FAIL_COLOR,
+          id: node.id,
         });
         return {};
       });
 
   }
 
-  _describeNewData(dependencies) {
+  private _describeNewData(dependencies) {
     return Promise.resolve()
       .then(() => {
         return _(dependencies)
@@ -145,29 +185,21 @@ export default class NSOGraph {
             }
 
             memo.edges.push({
-              to: nodeId,
               arrows: "to",
+              to: nodeId,
             });
 
             return memo;
           }, {
-            nodes: [],
             edges: [],
+            nodes: [],
           });
       });
   }
 
-  clear() {
+  private clear() {
     this.labelStore = [];
     this.data.nodes.clear();
     this.data.edges.clear();
-  }
-
-  destroy() {
-    this.clear();
-
-    this.data = null;
-    this.network.destroy();
-    this.network = null;
   }
 }
