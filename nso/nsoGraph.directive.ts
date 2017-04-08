@@ -17,14 +17,14 @@ export default angular
  */
 function nsoGraphDirective() {
   return {
-    restrict: "E",
     link: nsoGraphDirectiveLink,
+    restrict: "E",
   };
 
   function nsoGraphDirectiveLink(scope, iElement, iAttrs) {
     let graph = new NSOGraph(iElement[0]);
 
-    iAttrs.$observe("moduleName", function(newValue, oldValue) {
+    iAttrs.$observe("moduleName", (newValue, oldValue) => {
       if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
         return;
       }
@@ -34,7 +34,7 @@ function nsoGraphDirective() {
 
     });
 
-    iAttrs.$observe("nodeScale", function(newValue, oldValue) {
+    iAttrs.$observe("nodeScale", (newValue, oldValue) => {
       if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
         return;
       }
@@ -42,7 +42,7 @@ function nsoGraphDirective() {
       // console.log('Scale with', graph.network, newValue)
     });
 
-    scope.$watch(iAttrs["networkOptions"], function(newValue, oldValue) {
+    scope.$watch(iAttrs["networkOptions"], (newValue, oldValue) => {
       if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
         return;
       }

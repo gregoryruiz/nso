@@ -6,16 +6,16 @@ import NsoGraphDirective from "./nsoGraph.directive";
 
 const STATES = {
   "root": {
-    url: "/",
-    template: nsoIndexHTMLTemplate,
     controller: "RootController",
     controllerAs: "rootCtrl",
+    template: nsoIndexHTMLTemplate,
+    url: "/",
   },
   "root.search": {
-    url: "search/:moduleName",
     resolve: {
       resolveModuleName,
     },
+    url: "search/:moduleName",
   },
 };
 
@@ -59,7 +59,7 @@ function RootController($scope, $injector) {
     this.networkOptions = LAYOUTS[this._layoutIndex];
   };
 
-  $scope.$watch("rootCtrl.SearchService.searchTerm", function(newValue, oldValue){
+  $scope.$watch("rootCtrl.SearchService.searchTerm", (newValue, oldValue) => {
     if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
       return;
     }
@@ -79,9 +79,7 @@ function nsoConfig($injector) {
   const $stateProvider = $injector.get("$stateProvider");
   const $urlRouterProvider = $injector.get("$urlRouterProvider");
 
-  _.each(STATES, function(stateConfig, stateName) {
-    $stateProvider.state(stateName, stateConfig);
-  });
+  _.each(STATES, (stateConfig, stateName) => $stateProvider.state(stateName, stateConfig));
 
   $urlRouterProvider.otherwise(STATES.root.url);
   $urlRouterProvider.otherwise("/search/express");
@@ -98,7 +96,7 @@ function urlReloadingRun($injector) {
 
   // Change URL without reloading state
   // From https://stackoverflow.com/questions/23585065/angularjs-ui-router-change-url-without-reloading-state
-  $rootScope.$on("$locationChangeSuccess", function(e, newUrl, oldUrl) {
+  $rootScope.$on("$locationChangeSuccess", (e, newUrl, oldUrl) => {
     // Prevent $urlRouter's default handler from firing
     e.preventDefault();
 

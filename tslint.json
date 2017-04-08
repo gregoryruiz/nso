@@ -5,14 +5,23 @@
     ],
     "jsRules": {},
     "rules": {
+        // "interface-name": [
+        //     false
+        // ],
+        "max-classes-per-file": [
+            false
+        ],
+        // "member-access": [
+        //     false
+        // ],
         "no-console": [
             "log"
         ],
-        "no-string-literal": false,
-        "object-literal-sort-keys": false,
-        "only-arrow-functions": [
-            false
-        ]
+        "no-string-literal": false
+        // "object-literal-sort-keys": false,
+        // "only-arrow-functions": [
+        //     false
+        // ]
     },
     "rulesDirectory": []
 }

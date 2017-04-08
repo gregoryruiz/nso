@@ -1,44 +1,71 @@
-export interface NSOColor {
+export interface INsoColor {
   border: string;
   background: string;
 }
 
 export const COLOR = {
-  WHITE: "#fff",
-  GRAY_LIGHT: "#ccc",
-  GRAY_DARK: "#999",
   BLACK: "#000",
+  GRAY_DARK: "#999",
+  GRAY_LIGHT: "#ccc",
+  WHITE: "#fff",
 };
 
-export const NODE_DEFAULT_COLOR: NSOColor = {
-  border: COLOR.GRAY_DARK,
+export const NODE_DEFAULT_COLOR: INsoColor = {
   background: COLOR.BLACK,
+  border: COLOR.GRAY_DARK,
 };
 
-export const NODE_LOADING_COLOR: NSOColor = {
-  border: "rgba(50,50,200,.8)",
+export const NODE_LOADING_COLOR: INsoColor = {
   background: "rgb(50,50,200)",
+  border: "rgba(50,50,200,.8)",
 };
 
-export const NODE_SELECTED_COLOR: NSOColor = {
-  border: "hsl(0, 65%, 25%)",
+export const NODE_SELECTED_COLOR: INsoColor = {
   background: "hsl(0, 65%, 50%)",
+  border: "hsl(0, 65%, 25%)",
 };
 
-export const NODE_FAIL_COLOR: NSOColor = {
-  border: "#999",
+export const NODE_FAIL_COLOR: INsoColor = {
   background: "#666",
+  border: "#999",
 };
 
-export const NODE_ROOT_COLOR: NSOColor = {
-  border: "rgba(50,200,50,.8)",
+export const NODE_ROOT_COLOR: INsoColor = {
   background: "rgb(50,200, 50)",
+  border: "rgba(50,200,50,.8)",
 };
 
-const NSOOptions: vis.Options = {
+const NSO_OPTIONS: vis.Options = {
+
+  edges: {
+    arrows: {
+      from: {
+        enabled: false,
+        scaleFactor: 0,
+      },
+      to: {
+        enabled: true,
+        scaleFactor: .5,
+      },
+    },
+    color: {
+      inherit: "from",
+    },
+    smooth: {
+      enabled: true,
+      forceDirection: "none",
+      roundness: 1,
+      type: "continuous",
+    },
+    width: 1.1,
+  },
+
+  interaction: {
+    hideEdgesOnDrag: true,
+    tooltipDelay: 200,
+  },
 
   nodes: {
-    shape: "dot",
     color: Object.assign({},
       NODE_DEFAULT_COLOR,
       {highlight: NODE_SELECTED_COLOR},
@@ -49,33 +76,11 @@ const NSOOptions: vis.Options = {
     },
     scaling: {
       customScalingFunction: (min, max, total, value) => value / max,
-      min: 10,
       max: 50,
+      min: 10,
     },
+    shape: "dot",
     size: 10,
-  },
-
-  edges: {
-    arrows: {
-      to: {
-        enabled: true,
-        scaleFactor: .5,
-      },
-      from: {
-        enabled: false,
-        scaleFactor: 0,
-      },
-    },
-    width: 1.1,
-    color: {
-      inherit: "from",
-    },
-    smooth: {
-      enabled: true,
-      type: "continuous",
-      forceDirection: "none",
-      roundness: 1,
-    },
   },
 
   physics: {
@@ -85,11 +90,6 @@ const NSOOptions: vis.Options = {
     // maxVelocity: 58,
     solver: "barnesHut",
   },
-
-  interaction: {
-    tooltipDelay: 200,
-    hideEdgesOnDrag: true,
-  },
 };
 
-export default NSOOptions;
+export default NSO_OPTIONS;

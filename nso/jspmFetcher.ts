@@ -2,7 +2,7 @@ import _ from "lodash";
 
 const PACKAGE_FILE_NAME = "package.json";
 
-export interface JspmPackageInfo {
+export interface IJspmPackageInfo {
   name: string;
   repository?: string;
   license?: string;
@@ -15,23 +15,14 @@ export interface JspmPackageInfo {
   version?: string;
 }
 
-export async function getPackageInfosAsync(packageName: string): Promise<JspmPackageInfo> {
+export async function getPackageInfosAsync(packageName: string): Promise<IJspmPackageInfo> {
   try {
     return await System.import(`npm:${packageName.toLowerCase()}/${PACKAGE_FILE_NAME}!`);
   } catch (error) {
     console.log("Error: ", error.message);
   }
-  // System
-  //   .import(`npm:${packageName.toLowerCase()}/${PACKAGE_FILE_NAME}!`)
-  //   .then((res) => {
-  //     return JSON.parse(res);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     return null;
-  //   });
 }
 
-export default function jspmFetcher({label: moduleName}): Promise<JspmPackageInfo> {
+export default function jspmFetcher({label: moduleName}): Promise<IJspmPackageInfo> {
   return System.import(`npm:${moduleName.toLowerCase()}/${PACKAGE_FILE_NAME}!`);
 }

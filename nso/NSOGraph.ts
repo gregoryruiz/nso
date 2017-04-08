@@ -2,20 +2,20 @@ import _ from "lodash";
 import vis from "vis";
 import {
   getPackageInfosAsync,
-  JspmPackageInfo,
+  IJspmPackageInfo,
 } from "./jspmFetcher";
 import defaultOptions, {
+  INsoColor,
   NODE_DEFAULT_COLOR,
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
   NODE_ROOT_COLOR,
-  NSOColor,
 } from "./options";
 
 /**
- * NSOData
+ * NsoData
  */
-class NSOData implements vis.Data {
+class NsoData implements vis.Data {
   public nodes?: vis.DataSet<INsoNode>;
   public edges?: vis.DataSet<vis.Edge>;
 
@@ -26,28 +26,28 @@ class NSOData implements vis.Data {
 }
 
 /**
- * NSONode
+ * INsoNode
  */
 interface INsoNode extends vis.Node {
       _depth?: number;
       _dependencyCount?: number;
       _dependentCount?: number;
       mass?: number;
-      color?: NSOColor;
+      color?: INsoColor;
       value?: number;
 }
 
 export default class NSOGraph {
   public network: vis.Network;
   private getScale: (node: INsoNode) => number;
-  private data: NSOData;
+  private data: NsoData;
   private labelStore: string[];
   private networkOptions: vis.Options;
 
   constructor(element: HTMLElement) {
 
     this.labelStore = [];
-    this.data = new NSOData();
+    this.data = new NsoData();
 
     this.getScale = (node) => node._dependencyCount + node._dependentCount;
     this.networkOptions = Object.assign({}, defaultOptions);
@@ -110,18 +110,19 @@ export default class NSOGraph {
             nodes: newNodes,
             edges: newEdges,
           }) => {
-            newNodes = newNodes.map((node) => {
-              node._depth = fetchingDepth;
-              node._dependentCount = 0;
-              node._dependencyCount = 0;
-              node.color = NODE_LOADING_COLOR;
+            newNodes = newNodes.map((newNode) => {
+              newNode._depth = fetchingDepth;
+              newNode._dependentCount = 0;
+              newNode._dependencyCount = 0;
+              newNode.color = NODE_LOADING_COLOR;
 
-              return node;
+              return newNode;
             });
             this.data.nodes.add(newNodes);
             this.data.edges.add(
               newEdges.map((edge) => {
-                const depNode = this.data.nodes.get(edge.to);
+                const depNode = this.data.nodes.get(edge.to as vis.IdType);
+                console.log(depNode);
                 node._dependencyCount++;
                 depNode._dependentCount++;
 
@@ -171,8 +172,8 @@ export default class NSOGraph {
   private _describeNewData(dependencies) {
     return Promise.resolve()
       .then(() => {
-        return _(dependencies)
-          .reduce((memo, version, dependencyName) => {
+        return Object.entries(dependencies)
+          .reduce((memo, [dependencyName]) => {
 
             let nodeId = this.labelStore.indexOf(dependencyName);
 
