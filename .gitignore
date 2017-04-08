@@ -73,6 +73,4 @@ typings/
 
 # Output of 'npm run watch'
 dist/*
-!dist/nso/
-dist/nso/*
-!dist/nso/nso.index.html
+.awcache

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script>
+    document.write('<base href="' + document.location + '" />');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <title>NSO 0.2.0</title>
+  <meta name="description" content="NPM Space Observatory"/>
+</head>
+
+<body>
+  <!--
+  =====================================================
+
+
+
+
+
+
+
+  =====================================================
+  -->
+  <ui-view></ui-view>
+  <!--
+  =====================================================
+
+
+
+
+
+
+
+
+  =====================================================
+  -->
+
+  <!--
+  =====================================================
+
+
+
+
+
+
+
+
+  =====================================================
+  -->
+  <script type="text/javascript">
+  <%= compilation.assets[htmlWebpackPlugin.files.chunks['webpack-loader'].entry].source() %>
+  </script>
+
+  <%
+  _(htmlWebpackPlugin.files.chunks)
+    .omit('webpack-loader', 'webfont')
+    .forEach((chunk) => {
+  %>
+  <script type="text/javascript" src="<%= chunk.entry %>"></script>
+  <%}) %>
+
+
+  <script type="text/javascript">
+  <%= compilation.assets[htmlWebpackPlugin.files.chunks['webfont'].entry].source() %>
+  </script>
+
+  <!--
+  =====================================================
+
+
+
+
+
+
+
+
+  =====================================================
+  -->
+</body>
+
+</html>

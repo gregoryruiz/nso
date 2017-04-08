@@ -1,5 +1,5 @@
-import _ from "lodash";
-import vis from "vis";
+import * as _ from "lodash";
+import * as vis from "vis";
 import {
   getPackageInfosAsync,
   IJspmPackageInfo,
@@ -192,8 +192,8 @@ export default class NSOGraph {
 
             return memo;
           }, {
-            edges: [],
-            nodes: [],
+            edges: [] as vis.EdgeOptions[],
+            nodes: [] as INsoNode[],
           });
       });
   }

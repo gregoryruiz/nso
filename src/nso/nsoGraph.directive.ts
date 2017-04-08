@@ -1,5 +1,5 @@
-import angular from "angular";
-import _ from "lodash";
+import * as angular from "angular";
+import * as _ from "lodash";
 import NSOGraph from "./NSOGraph";
 
 export default angular
