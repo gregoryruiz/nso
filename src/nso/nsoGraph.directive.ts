@@ -1,5 +1,5 @@
 import * as angular from "angular";
-import * as _ from "lodash";
+import { isEmpty, isEqual } from "lodash-es";
 import NSOGraph from "./NSOGraph";
 
 export default angular
@@ -16,6 +16,8 @@ export default angular
  * @param {string} nodeScale The key used to scale the nodes
  */
 function nsoGraphDirective() {
+  "ngInject";
+
   return {
     link: nsoGraphDirectiveLink,
     restrict: "E",
@@ -25,7 +27,7 @@ function nsoGraphDirective() {
     let graph = new NSOGraph(iElement[0]);
 
     iAttrs.$observe("moduleName", (newValue, oldValue) => {
-      if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
+      if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
         return;
       }
 
@@ -35,7 +37,7 @@ function nsoGraphDirective() {
     });
 
     iAttrs.$observe("nodeScale", (newValue, oldValue) => {
-      if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
+      if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
         return;
       }
       // graph.setNetworkOptions();
@@ -43,7 +45,7 @@ function nsoGraphDirective() {
     });
 
     scope.$watch(iAttrs["networkOptions"], (newValue, oldValue) => {
-      if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
+      if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
         return;
       }
       console.log("networkOptions", graph.network, newValue);

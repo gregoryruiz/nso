@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+//
 
 const PACKAGE_FILE_NAME = "package.json";
 
@@ -16,11 +16,15 @@ export interface IJspmPackageInfo {
 }
 
 export async function getPackageInfosAsync(packageName: string): Promise<IJspmPackageInfo> {
+  let response: Response;
+
   try {
-    return await System.import(`npm:${packageName.toLowerCase()}/${PACKAGE_FILE_NAME}!`);
+    response = await fetch(`https://unpkg.com/${packageName.toLowerCase()}/${PACKAGE_FILE_NAME}`);
   } catch (error) {
     console.log("Error: ", error.message);
   }
+
+  return response.json();
 }
 
 export default function jspmFetcher({label: moduleName}): Promise<IJspmPackageInfo> {

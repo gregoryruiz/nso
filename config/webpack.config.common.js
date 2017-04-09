@@ -2,9 +2,9 @@
 
 const { resolve } = require('path')
 
-const { optimize: { CommonsChunkPlugin }, ProgressPlugin } = require('webpack')
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const { IgnorePlugin, optimize: { CommonsChunkPlugin }, ProgressPlugin } = require('webpack')
 const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 //
 
@@ -18,24 +18,22 @@ exports.default = {
 
   context: resolve(__dirname, '..'),
 
-  devtool: "source-map",
-
   entry: {
     webfont: './src/webfont.ts',
-    bootstrap: './src/bootstrap.ts'
-  },
-
-  //
-
-  output: {
-    path: resolve(__dirname, '../dist'),
-    filename: '[name].bundle.js',
+    bootstrap: ['babel-polyfill', './src/bootstrap.ts']
   },
 
   //
 
   module: {
     rules: [
+      {
+        // Disable require.ensure
+        parser: {
+          requireEnsure: false
+        }
+      },
+
       {
         test: /\.ts$/,
         use: [
@@ -84,18 +82,30 @@ exports.default = {
 
   //
 
+  node: {
+    // Don't import Node Modules
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+  },
+
+  //
+
+  output: {
+    path: resolve(__dirname, '../dist'),
+    filename: '[name].[chunkhash:8].js',
+  },
+
+  //
+
   plugins: [
     // awesome-typescript-loader plugins
     new CheckerPlugin(),
     new TsConfigPathsPlugin(),
 
-    // html-webpack-plugin plugin
-    new HtmlWebpackPlugin({
-      inject: false,
-      template: './src/index.html'
-    }),
-
     // webpack plugins
+    new CaseSensitivePathsPlugin(),
+
     new CommonsChunkPlugin({
       name: 'vendor',
       minChunks: isInNodeModules
@@ -104,10 +114,10 @@ exports.default = {
       name: 'polyfills',
       minChunks: isInPolyfillsCommonChunk
     }),
-    new CommonsChunkPlugin('webpack-loader'),
-
-    new ProgressPlugin()
-  ],
+    new CommonsChunkPlugin('webpack-loader')
+  ]
+    // Don't use progess plugin on Travis
+    .concat(process.env.TRAVIS ? [] : [new ProgressPlugin()]),
 
   //
 

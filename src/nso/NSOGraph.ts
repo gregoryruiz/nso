@@ -1,4 +1,5 @@
-import * as _ from "lodash";
+//
+
 import * as vis from "vis";
 import {
   getPackageInfosAsync,

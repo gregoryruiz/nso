@@ -1,6 +1,6 @@
 import * as angular from "angular";
 import "angular-ui-router";
-import * as _ from "lodash";
+import { each, isEmpty, isEqual } from "lodash-es";
 import nsoIndexHTMLTemplate from "./nso.module.html";
 import NsoGraphDirective from "./nsoGraph.directive";
 
@@ -35,10 +35,12 @@ export default angular
   .name;
 
 function SearchService() {
+  "ngInject";
   this.searchTerm = "";
 }
 
 function RootController($scope, $injector) {
+  "ngInject";
   console.log("RootController");
   const $state = $injector.get("$state");
   const SearchService = $injector.get("SearchService");
@@ -63,7 +65,7 @@ function RootController($scope, $injector) {
   };
 
   $scope.$watch("rootCtrl.SearchService.searchTerm", (newValue, oldValue) => {
-    if (_.isEmpty(newValue) || _.isEqual(newValue, oldValue)) {
+    if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
       return;
     }
     $state.go("root.search", { moduleName: newValue});
@@ -71,6 +73,7 @@ function RootController($scope, $injector) {
 }
 
 function resolveModuleName($injector, $stateParams) {
+  "ngInject";
   console.log("resolveModuleName");
   // WARN: $stateParams must be in the arguments here
   const SearchService = $injector.get("SearchService");
@@ -78,11 +81,12 @@ function resolveModuleName($injector, $stateParams) {
 }
 
 function nsoConfig($injector) {
+  "ngInject";
   // Injection
   const $stateProvider = $injector.get("$stateProvider");
   const $urlRouterProvider = $injector.get("$urlRouterProvider");
 
-  _.each(STATES, (stateConfig, stateName) => $stateProvider.state(stateName, stateConfig));
+  each(STATES, (stateConfig, stateName) => $stateProvider.state(stateName, stateConfig));
 
   $urlRouterProvider.otherwise(STATES.root.url);
   $urlRouterProvider.otherwise("/search/express");
@@ -93,6 +97,7 @@ function nsoConfig($injector) {
 }
 
 function urlReloadingRun($injector) {
+  "ngInject";
   const $rootScope = $injector.get("$rootScope");
   const $state = $injector.get("$state");
   const $urlRouter = $injector.get("$urlRouter");
@@ -125,6 +130,7 @@ function urlReloadingRun($injector) {
 }
 
 function exposeToRootScopeRun($injector) {
+  "ngInject";
   const $rootScope = $injector.get("$rootScope");
   $rootScope.$state = $injector.get("$state");
 }
