@@ -29,7 +29,6 @@
     "@types/vis": "^4.18.0",
     "awesome-typescript-loader": "^3.1.2",
     "babel-core": "^6.24.1",
-    "babel-loader": "^6.4.1",
     "babel-plugin-angularjs-annotate": "^0.7.0",
     "babel-plugin-lodash": "^3.2.11",
     "babel-preset-env": "^1.3.3",
