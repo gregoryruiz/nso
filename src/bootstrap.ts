@@ -5,4 +5,4 @@ import NsoModule from "./nso/nso.module";
 
 import "./base.scss";
 
-angular.bootstrap(document, [NsoModule]);
+angular.bootstrap(document, [NsoModule], {strictDi: true});

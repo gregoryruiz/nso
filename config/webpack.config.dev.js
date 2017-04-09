@@ -4,6 +4,7 @@ const { resolve } = require('path');
 
 const webpackMerge = require('webpack-merge');
 const { HotModuleReplacementPlugin, NamedModulesPlugin } = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const {default: config} = require('./webpack.config.common');
 
@@ -19,10 +20,27 @@ exports.default = webpackMerge(
       watchContentBase: true
     },
 
-    devtool: 'cheap-source-map',
+    //
+
+    devtool: 'inline-source-map',
+
+    //
+
+    performance: {
+      hints: false,
+    },
+
+    //
 
     plugins: [
-      new NamedModulesPlugin()
+      new NamedModulesPlugin(),
+
+      // html-webpack-plugin plugin
+      new HtmlWebpackPlugin({
+        inject: false,
+        template: './src/index.html'
+      }),
+
     ]
   }
 );
