@@ -1,8 +1,8 @@
 {
   "name": "nso",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "NPM Space Observatory",
-  "main": "src/nso/index.js",
+  "main": "src/bootrap.ts",
   "scripts": {
     "build": "del dist && webpack --config config/webpack.config.prod.js",
     "serve:prod": "webpack-dev-server webpack/hot/only-dev-server --inline --content-base dist/",
@@ -26,7 +26,6 @@
     "@types/angular": "^1.6.14",
     "@types/angular-ui-router": "^1.1.36",
     "@types/lodash-es": "^4.14.5",
-    "@types/systemjs": "^0.20.2",
     "@types/vis": "^4.18.0",
     "awesome-typescript-loader": "^3.1.2",
     "babel-core": "^6.24.1",

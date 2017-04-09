@@ -1,10 +1,6 @@
 //
 
 import * as vis from "vis";
-import {
-  getPackageInfosAsync,
-  IJspmPackageInfo,
-} from "./jspmFetcher";
 import defaultOptions, {
   INsoColor,
   NODE_DEFAULT_COLOR,
@@ -12,6 +8,10 @@ import defaultOptions, {
   NODE_LOADING_COLOR,
   NODE_ROOT_COLOR,
 } from "./options";
+import {
+  getPackageInfosAsync,
+  IPackageInfo,
+} from "./unpkgFetcher";
 
 /**
  * NsoData

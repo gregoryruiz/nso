@@ -2,7 +2,7 @@
 
 const PACKAGE_FILE_NAME = "package.json";
 
-export interface IJspmPackageInfo {
+export interface IPackageInfo {
   name: string;
   repository?: string;
   license?: string;
@@ -15,18 +15,14 @@ export interface IJspmPackageInfo {
   version?: string;
 }
 
-export async function getPackageInfosAsync(packageName: string): Promise<IJspmPackageInfo> {
+export async function getPackageInfosAsync(packageName: string): Promise<IPackageInfo> {
   let response: Response;
 
   try {
     response = await fetch(`https://unpkg.com/${packageName.toLowerCase()}/${PACKAGE_FILE_NAME}`);
-  } catch (error) {
-    console.log("Error: ", error.message);
+  } catch (e) {
+    console.error("getPackageInfosAsync", e);
   }
 
   return response.json();
-}
-
-export default function jspmFetcher({label: moduleName}): Promise<IJspmPackageInfo> {
-  return System.import(`npm:${moduleName.toLowerCase()}/${PACKAGE_FILE_NAME}!`);
 }
