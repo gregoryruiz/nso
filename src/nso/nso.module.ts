@@ -1,6 +1,11 @@
 import * as angular from "angular";
 import "angular-ui-router";
-import { each, isEmpty, isEqual } from "lodash-es";
+import {
+  each,
+  isEmpty,
+  isEqual,
+} from "lodash-es";
+
 import nsoIndexHTMLTemplate from "./nso.module.html";
 import NsoGraphDirective from "./nsoGraph.directive";
 
@@ -39,10 +44,10 @@ function SearchService() {
   this.searchTerm = "";
 }
 
-function RootController($scope, $injector) {
+function RootController($scope: ng.IScope, $injector: ng.auto.IInjectorService) {
   "ngInject";
   console.log("RootController");
-  const $state = $injector.get("$state");
+  const $state = $injector.get<ng.ui.IStateService>("$state");
   const SearchService = $injector.get("SearchService");
   const LAYOUTS = [
     { layout: { hierarchical: { enabled: false } } },
@@ -72,7 +77,7 @@ function RootController($scope, $injector) {
   });
 }
 
-function resolveModuleName($injector, $stateParams) {
+function resolveModuleName($injector: ng.auto.IInjectorService, $stateParams: ng.ui.IStateParamsService) {
   "ngInject";
   console.log("resolveModuleName");
   // WARN: $stateParams must be in the arguments here
@@ -80,11 +85,11 @@ function resolveModuleName($injector, $stateParams) {
   SearchService.searchTerm = $stateParams.moduleName;
 }
 
-function nsoConfig($injector) {
+function nsoConfig($injector: ng.auto.IInjectorService) {
   "ngInject";
   // Injection
-  const $stateProvider = $injector.get("$stateProvider");
-  const $urlRouterProvider = $injector.get("$urlRouterProvider");
+  const $stateProvider = $injector.get<ng.ui.IStateProvider>("$stateProvider");
+  const $urlRouterProvider = $injector.get<ng.ui.IUrlRouterProvider>("$urlRouterProvider");
 
   each(STATES, (stateConfig, stateName) => $stateProvider.state(stateName, stateConfig));
 
@@ -96,11 +101,11 @@ function nsoConfig($injector) {
   $urlRouterProvider.deferIntercept();
 }
 
-function urlReloadingRun($injector) {
+function urlReloadingRun($injector: ng.auto.IInjectorService) {
   "ngInject";
-  const $rootScope = $injector.get("$rootScope");
-  const $state = $injector.get("$state");
-  const $urlRouter = $injector.get("$urlRouter");
+  const $rootScope = $injector.get<ng.IRootScopeService>("$rootScope");
+  const $state = $injector.get<ng.ui.IStateService>("$state");
+  const $urlRouter = $injector.get<ng.ui.IUrlRouterService>("$urlRouter");
 
   // Change URL without reloading state
   // From https://stackoverflow.com/questions/23585065/angularjs-ui-router-change-url-without-reloading-state
@@ -129,7 +134,7 @@ function urlReloadingRun($injector) {
   $urlRouter.listen();
 }
 
-function exposeToRootScopeRun($injector) {
+function exposeToRootScopeRun($injector: ng.auto.IInjectorService) {
   "ngInject";
   const $rootScope = $injector.get("$rootScope");
   $rootScope.$state = $injector.get("$state");
