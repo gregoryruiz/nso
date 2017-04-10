@@ -81,7 +81,7 @@ function resolveModuleName($injector: ng.auto.IInjectorService, $stateParams: ng
   "ngInject";
   console.log("resolveModuleName");
   // WARN: $stateParams must be in the arguments here
-  const SearchService = $injector.get("SearchService");
+  const SearchService = $injector.get<any>("SearchService");
   SearchService.searchTerm = $stateParams.moduleName;
 }
 
