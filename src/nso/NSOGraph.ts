@@ -1,8 +1,11 @@
 //
 
 import * as vis from "vis";
+
+import { Data } from "./nso.model.data";
+import { Node } from "./nso.model.node";
+import { NodeColor } from "./nso.model.nodeColor";
 import defaultOptions, {
-  INsoColor,
   NODE_DEFAULT_COLOR,
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
@@ -13,60 +16,28 @@ import {
   IPackageInfo,
 } from "./unpkgFetcher";
 
-/**
- * NsoData
- */
-class NsoData implements vis.Data {
-  public nodes?: vis.DataSet<INsoNode>;
-  public edges?: vis.DataSet<vis.Edge>;
-
-  constructor() {
-    this.nodes = new vis.DataSet<INsoNode>();
-    this.edges = new vis.DataSet<vis.Edge>();
-  }
-}
-
-/**
- * INsoNode
- */
-interface INsoNode extends vis.Node {
-      _depth?: number;
-      _dependencyCount?: number;
-      _dependentCount?: number;
-      mass?: number;
-      color?: INsoColor;
-      value?: number;
-}
-
 export default class NSOGraph {
   public network: vis.Network;
-  private getScale: (node: INsoNode) => number;
-  private data: NsoData;
-  private labelStore: string[];
-  private networkOptions: vis.Options;
 
-  constructor(element: HTMLElement) {
+  constructor(
+    element: HTMLElement,
+    private labelStore: string[] = [],
+    private data: Data = new Data(),
+    private networkOptions: vis.Options = defaultOptions) {
 
-    this.labelStore = [];
-    this.data = new NsoData();
-
-    this.getScale = (node) => node._dependencyCount + node._dependentCount;
-    this.networkOptions = Object.assign({}, defaultOptions);
-    this.network = new vis.Network(element, this.data, this.networkOptions);
-
-    this.network.on("stabilized", () => {
-      console.log("stabilized");
-      this.network.fit();
-    });
-
+    this.network = new vis.Network(
+      element,
+      this.data,
+      this.networkOptions);
+    this.network.on("stabilized", this.onNetworkStabilized);
   }
 
   public setNetworkOptions(options: vis.Options) {
     this.network.setOptions(Object.assign(this.networkOptions, options));
   }
 
-  public drawDependenciesFrom(rootModuleName) {
-    const rootNode: INsoNode = {
+  public drawDependenciesFrom(rootModuleName: string) {
+    const rootNode: Node = {
       _dependencyCount: 0,
       _dependentCount: 0,
       _depth: 0,
@@ -93,7 +64,14 @@ export default class NSOGraph {
     this.network = null;
   }
 
-  private dependencyFetching(node: INsoNode) {
+  private getScale = (node: Node) => node._dependencyCount + node._dependentCount;
+
+  private onNetworkStabilized = (params?: any) => {
+    console.log("stabilized");
+    this.network.fit();
+  }
+
+  private dependencyFetching(node: Node): Promise<void> {
     const fetchingDepth = node._depth + 1;
     return Promise.resolve(node)
       .then((res) => {
@@ -123,7 +101,7 @@ export default class NSOGraph {
             this.data.edges.add(
               newEdges.map((edge) => {
                 const depNode = this.data.nodes.get(edge.to as vis.IdType);
-                console.log(depNode);
+                // console.log(depNode);
                 node._dependencyCount++;
                 depNode._dependentCount++;
 
@@ -194,7 +172,7 @@ export default class NSOGraph {
             return memo;
           }, {
             edges: [] as vis.EdgeOptions[],
-            nodes: [] as INsoNode[],
+            nodes: [] as Node[],
           });
       });
   }
