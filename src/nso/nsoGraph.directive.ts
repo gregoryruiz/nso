@@ -1,6 +1,9 @@
+//
+
 import * as angular from "angular";
 import { isEmpty, isEqual } from "lodash-es";
-import NSOGraph from "./NSOGraph";
+
+import NSOGraph from "nso/NSOGraph";
 
 export default angular
   .module("npm-graph", [])

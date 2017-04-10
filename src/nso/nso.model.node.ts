@@ -1,6 +1,6 @@
-import { Node } from "vis";
+//
 
-import { NodeColor } from "./nso.model.nodeColor";
+import { NodeColor } from "nso/nso.model.nodeColor";
 
 /**
  * nso.model.Node

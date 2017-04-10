@@ -123,6 +123,9 @@ exports.default = {
 
   resolve: {
     extensions: ['.js', '.ts'],
+    plugins: [
+        new TsConfigPathsPlugin(/* { tsconfig, compiler } */)
+    ],
     modules: [
       "node_modules",
       resolve(__dirname, 'src')

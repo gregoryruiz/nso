@@ -1,3 +1,5 @@
+//
+
 import * as angular from "angular";
 import "angular-ui-router";
 import {
@@ -6,11 +8,11 @@ import {
   isEqual,
 } from "lodash-es";
 
-import nsoIndexHTMLTemplate from "./nso.module.html";
-import NsoGraphDirective from "./nsoGraph.directive";
+import nsoIndexHTMLTemplate from "nso/nso.module.html";
+import NsoGraphDirective from "nso/nsoGraph.directive";
 
-import "./nso-app.scss";
-import "./omnibox.scss";
+import "nso/nso-app.scss";
+import "nso/omnibox.scss";
 
 const STATES = {
   "root": {

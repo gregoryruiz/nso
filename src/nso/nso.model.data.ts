@@ -1,6 +1,8 @@
-import * as vis from "vis";
+//
 
-import { Node } from "./nso.model.node";
+import { DataSet } from "vis";
+
+import { Node } from "nso/nso.model.node";
 
 /**
  * nso.model.Data
@@ -10,7 +12,7 @@ export class Data implements vis.Data {
   public edges?: vis.DataSet<vis.Edge>;
 
   constructor() {
-    this.nodes = new vis.DataSet<Node>();
-    this.edges = new vis.DataSet<vis.Edge>();
+    this.nodes = new DataSet<Node>();
+    this.edges = new DataSet<vis.Edge>();
   }
 }

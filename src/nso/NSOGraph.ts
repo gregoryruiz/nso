@@ -1,20 +1,20 @@
 //
 
-import * as vis from "vis";
+import { Network } from "vis";
 
-import { Data } from "./nso.model.data";
-import { Node } from "./nso.model.node";
-import { NodeColor } from "./nso.model.nodeColor";
+import { Data } from "nso/nso.model.data";
+import { Node } from "nso/nso.model.node";
+import { NodeColor } from "nso/nso.model.nodeColor";
 import defaultOptions, {
   NODE_DEFAULT_COLOR,
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
   NODE_ROOT_COLOR,
-} from "./options";
+} from "nso/options";
 import {
   getPackageInfosAsync,
   IPackageInfo,
-} from "./unpkgFetcher";
+} from "nso/unpkgFetcher";
 
 export default class NSOGraph {
   public network: vis.Network;
@@ -25,7 +25,7 @@ export default class NSOGraph {
     private data: Data = new Data(),
     private networkOptions: vis.Options = defaultOptions) {
 
-    this.network = new vis.Network(
+    this.network = new Network(
       element,
       this.data,
       this.networkOptions);
