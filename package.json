@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "NPM Space Observatory",
   "main": "src/bootrap.ts",
+  "homepage": "https://travis-ci.org/gregoryruiz/nso",
   "scripts": {
     "build": "del dist && webpack --config config/webpack.config.prod.js",
     "serve:prod": "webpack-dev-server webpack/hot/only-dev-server --inline --content-base dist/",
