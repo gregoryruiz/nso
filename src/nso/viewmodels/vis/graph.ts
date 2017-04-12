@@ -2,28 +2,27 @@
 
 import { Network } from "vis";
 
-import { Data } from "nso/nso.model.data";
-import { Node } from "nso/nso.model.node";
-import { NodeColor } from "nso/nso.model.nodeColor";
-import defaultOptions, {
+import { fetchPackageInfosAsync } from "nso/dal";
+import {
+  Data,
+  Node,
   NODE_DEFAULT_COLOR,
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
   NODE_ROOT_COLOR,
-} from "nso/options";
-import {
-  getPackageInfosAsync,
-  IPackageInfo,
-} from "nso/unpkgFetcher";
+  NodeColor,
+  PackageInfos,
+} from "nso/models";
+import { DEFAULT_GRAPH_OPTIONS } from "nso/viewmodels/vis";
 
-export default class NSOGraph {
+export class Graph {
   public network: vis.Network;
 
   constructor(
     element: HTMLElement,
     private labelStore: string[] = [],
     private data: Data = new Data(),
-    private networkOptions: vis.Options = defaultOptions) {
+    private networkOptions: vis.Options = DEFAULT_GRAPH_OPTIONS) {
 
     this.network = new Network(
       element,
@@ -75,7 +74,7 @@ export default class NSOGraph {
     const fetchingDepth = node._depth + 1;
     return Promise.resolve(node)
       .then((res) => {
-        return getPackageInfosAsync(res.label);
+        return fetchPackageInfosAsync(res.label);
       })
       .then((pkg) => {
         if (!this.data) {

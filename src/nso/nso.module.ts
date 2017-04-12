@@ -1,6 +1,6 @@
 //
 
-import * as angular from "angular";
+import { module } from "angular";
 import "angular-ui-router";
 import {
   each,
@@ -29,8 +29,7 @@ const STATES = {
   },
 };
 
-export default angular
-  .module("nso", [
+export default module("nso", [
     NsoGraphDirective,
     "ui.router",
   ])
@@ -75,6 +74,7 @@ function RootController($scope: ng.IScope, $injector: ng.auto.IInjectorService) 
     if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
       return;
     }
+    console.log("watch", newValue, oldValue);
     $state.go("root.search", { moduleName: newValue});
   });
 }

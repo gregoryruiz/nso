@@ -1,12 +1,14 @@
 //
 
-import * as angular from "angular";
-import { isEmpty, isEqual } from "lodash-es";
+import { module } from "angular";
+import {
+  isEmpty,
+  isEqual,
+} from "lodash-es";
 
-import NSOGraph from "nso/NSOGraph";
+import { Graph } from "nso/viewmodels/vis";
 
-export default angular
-  .module("npm-graph", [])
+export default module("npm-graph", [])
   .directive("nsoGraph", nsoGraphDirective)
   .name;
 
@@ -27,14 +29,16 @@ function nsoGraphDirective() {
   };
 
   function nsoGraphDirectiveLink(scope, iElement, iAttrs) {
-    let graph = new NSOGraph(iElement[0]);
+    let graph = new Graph(iElement[0]);
 
     iAttrs.$observe("moduleName", (newValue, oldValue) => {
       if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
         return;
       }
 
-      graph = new NSOGraph(iElement[0]);
+      console.log("new moduleName", newValue);
+
+      graph = new Graph(iElement[0]);
       graph.drawDependenciesFrom(newValue);
 
     });

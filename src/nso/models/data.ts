@@ -2,7 +2,7 @@
 
 import { DataSet } from "vis";
 
-import { Node } from "nso/nso.model.node";
+import { Node } from "nso/models";
 
 /**
  * nso.model.Data

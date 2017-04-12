@@ -1,6 +1,6 @@
 //
 
-import { NodeColor } from "nso/nso.model.nodeColor";
+import { NodeColor } from "nso/models";
 
 /**
  * nso.model.Node
