@@ -2,16 +2,17 @@
 
   <div class="omnibox">
     <div class="searchbox">
-      <input type="search" ng-model="rootCtrl.SearchService.searchTerm" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
+      <input type="search"
+        ng-model="rootCtrl.SearchService.searchTerm"
+        ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
     </div>
   </div>
 
-  <nso-graph ng-if="$root.$state.current.name === 'root.tree'" module-name="{{ rootCtrl.SearchService.searchTerm }}" node-scale="{{ rootCtrl.scale }}"
+  <nso-graph
+    module-name="{{ rootCtrl.SearchService.searchTerm }}"
+    node-scale="{{ rootCtrl.scale }}"
     network-options="rootCtrl.networkOptions">
   </nso-graph>
-
-  <nso-d3-graph ng-if="$root.$state.current.name === 'root.circle'"></nso-d3-graph>
-
 
   <div class="app-bottom-content-anchor" hidden>
     <ul>
