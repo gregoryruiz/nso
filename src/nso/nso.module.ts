@@ -8,6 +8,7 @@ import {
   isEqual,
 } from "lodash-es";
 
+import { NsoD3GraphDirective } from "nso/nso-d3-graph.component";
 import nsoIndexHTMLTemplate from "nso/nso.module.html";
 import NsoGraphDirective from "nso/nsoGraph.directive";
 
@@ -21,11 +22,17 @@ const STATES = {
     template: nsoIndexHTMLTemplate,
     url: "/",
   },
-  "root.search": {
+  "root.tree": {
     resolve: {
       resolveModuleName,
     },
-    url: "search/:moduleName",
+    url: "tree/:moduleName",
+  },
+  "root.circle": {
+    resolve: {
+      resolveModuleName,
+    },
+    url: "circle/:moduleName",
   },
 };
 
@@ -36,6 +43,7 @@ export default module("nso", [
   .controller("RootController", RootController)
   .config(nsoConfig)
   .service("SearchService", SearchService)
+  .directive("nsoD3Graph", NsoD3GraphDirective)
   .run(exposeToRootScopeRun)
   .run(urlReloadingRun)
   .name;

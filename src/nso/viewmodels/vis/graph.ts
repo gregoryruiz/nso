@@ -50,6 +50,7 @@ export class Graph {
 
     this.dependencyFetching(rootNode)
       .then(() => {
+        console.log(this.data);
         console.log("Alllllllllllllllllllll doooooooooooooooone !", ...arguments);
         this.network.fit();
       });
