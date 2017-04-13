@@ -8,6 +8,7 @@ import {
   isEqual,
 } from "lodash-es";
 
+import { NsoD3GraphDirective } from "nso/nso-d3-graph.component";
 import nsoIndexHTMLTemplate from "nso/nso.module.html";
 import NsoGraphDirective from "nso/nsoGraph.directive";
 
@@ -21,11 +22,17 @@ const STATES = {
     template: nsoIndexHTMLTemplate,
     url: "/",
   },
-  "root.search": {
+  "root.d3": {
     resolve: {
       resolveModuleName,
     },
-    url: "search/:moduleName",
+    url: "d3/:moduleName",
+  },
+  "root.vis": {
+    resolve: {
+      resolveModuleName,
+    },
+    url: "vis/:moduleName",
   },
 };
 
@@ -36,6 +43,7 @@ export default module("nso", [
   .controller("RootController", RootController)
   .config(nsoConfig)
   .service("SearchService", SearchService)
+  .directive("nsoD3Graph", NsoD3GraphDirective)
   .run(exposeToRootScopeRun)
   .run(urlReloadingRun)
   .name;
@@ -96,7 +104,7 @@ function nsoConfig($injector: ng.auto.IInjectorService) {
   each(STATES, (stateConfig, stateName) => $stateProvider.state(stateName, stateConfig));
 
   $urlRouterProvider.otherwise(STATES.root.url);
-  $urlRouterProvider.otherwise("/search/express");
+  $urlRouterProvider.otherwise("/vis/express");
 
   // Change URL without reloading state
   // From https://stackoverflow.com/questions/23585065/angularjs-ui-router-change-url-without-reloading-state
