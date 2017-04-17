@@ -2,7 +2,7 @@
 
 import { module as ngModule } from "angular";
 
-import { HierarchicalEdgeBundlingComponent } from "./hierarchicalEdgeBundling/hierarchicalEdgeBundling.component";
+import { HierarchicalEdgeBundlingComponent } from "./hierarchical-edge-bundling/hierarchical-edge-bundling.component";
 import { OmniboxComponent } from "./omnibox/omnibox.component";
 
 //

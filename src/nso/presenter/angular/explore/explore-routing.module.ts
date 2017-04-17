@@ -7,6 +7,19 @@ import { IExploreRoutingParams } from "./explore-routing.interface";
 
 //
 
+const mockedVertex = {
+  nodes: [
+    {
+      key: "foo",
+    },
+  ],
+  edges: [
+    {
+
+    },
+  ],
+};
+
 export const ExploreRoutingModule = ngModule(String(module.id), [
   AngularUiRouterModule,
 ])
@@ -28,7 +41,7 @@ function stateProviderConfig($stateProvider: StateProvider) {
 
     // TODO(@douglasduteil): get params.pkg vertex
     console.warn(`TODO: get ${params.pkg} vertex`);
-    return {};
+    return mockedVertex;
   };
 
   $stateProvider.state({
