@@ -11,7 +11,7 @@ export class ExploreController implements Ng1Controller {
   public searchTerm: string;
 
   // From component binding
-  private $transition$: Transition;
+  public $transition$: Transition;
 
   constructor(
     private $state: StateService,
@@ -33,10 +33,7 @@ export class ExploreController implements Ng1Controller {
     this.searchTerm = params.pkg;
   }
 
-  public uiOnParamsChanged(
-    newParams: IExploreRoutingParams,
-    $transition$: Transition,
-  ) {
+  public uiOnParamsChanged(newParams: IExploreRoutingParams) {
     // When the url change
     this.searchTerm = newParams.pkg;
   }

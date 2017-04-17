@@ -17,9 +17,6 @@
       "es2017"
     ]
   },
-  "exclude": [
-    "**/*.spec.ts"
-  ],
   "include": [
     "src"
   ]

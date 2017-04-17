@@ -1,1 +1,1 @@
-export * from "./unpkgFetcher";
+export * from "./fetchPackageInfosAsync";

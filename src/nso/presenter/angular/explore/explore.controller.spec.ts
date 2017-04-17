@@ -1,49 +1,54 @@
 //
 
-import { Ng1Controller, StateService, Transition } from "angular-ui-router";
+import { test } from "ava";
+import { stub } from "sinon";
 
-import { IExploreRoutingParams } from "./explore-routing.interface";
+import { StateService, Transition } from "angular-ui-router";
 
 //
 
-export class ExploreController implements Ng1Controller {
+import { ExploreController } from "./explore.controller";
 
-  public searchTerm: string;
+//
 
-  // From component binding
-  private $transition$: Transition;
+test("on $onInit set the searchTerm to binded pkg params", async (t) => {
+  // given
+  const $state = {} as StateService;
+  const $ctrl = new ExploreController($state);
+  $ctrl.$transition$ = {
+    params: stub().returns({pkg: "foo"}),
+  } as any as Transition;
 
-  constructor(
-    private $state: StateService,
-  ) {
-    "ngInject";
-  }
+  // when
+  $ctrl.$onInit();
 
-  //
+  // then
+  t.is($ctrl.searchTerm, "foo");
+});
 
-  public onSearchTermChange(newTerm) {
-    // When the user change the input in the view
-    this.$state.go(".", { pkg: newTerm });
-  }
+test("on uiOnParamsChanged set the searchTerm to binded pkg params", async (t) => {
+  // given
+  const $state = {} as StateService;
+  const $ctrl = new ExploreController($state);
 
-  //
-  public $onInit() {
-    // When Angular initiate the component
-    const params: IExploreRoutingParams = this.$transition$.params();
-    this.searchTerm = params.pkg;
-  }
+  // when
+  $ctrl.uiOnParamsChanged({pkg: "bar"});
 
-  public uiOnParamsChanged(
-    newParams: IExploreRoutingParams,
-    $transition$: Transition,
-  ) {
-    // When the url change
-    this.searchTerm = newParams.pkg;
-  }
+  // then
+  t.is($ctrl.searchTerm, "bar");
+});
 
-  public uiCanExit() {
-    // Always allowed the router to exit this view
-    return true;
-  }
+test("on onSearchTermChange set go to pkg state", async (t) => {
+  // given
+  const $state = {
+    go: stub(),
+  }  as any as StateService;
+  const $ctrl = new ExploreController($state);
 
-}
+  // when
+  $ctrl.onSearchTermChange("bar");
+
+  // then
+  t.true(($state.go as sinon.SinonStub).calledOnce);
+  t.true(($state.go as sinon.SinonStub).calledWith(".", { pkg: "bar" }));
+});

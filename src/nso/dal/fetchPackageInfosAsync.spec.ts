@@ -5,7 +5,7 @@ import { sandbox } from "sinon";
 
 //
 
-import { fetchPackageInfosAsync } from "nso/dal";
+import { fetchPackageInfosAsync } from "./fetchPackageInfosAsync";
 
 //
 
