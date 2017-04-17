@@ -15,8 +15,9 @@ exports.default = webpackMerge(
   {
     devServer: {
       compress: true,
-      contentBase: resolve(__dirname, 'public'),
+      contentBase: resolve(__dirname, '../src'),
       historyApiFallback: true,
+      // stats: 'verbose',
       watchContentBase: true
     },
 
@@ -38,7 +39,7 @@ exports.default = webpackMerge(
       // html-webpack-plugin plugin
       new HtmlWebpackPlugin({
         inject: false,
-        template: './src/index.html'
+        template: './src/www/index.html'
       }),
 
     ]
