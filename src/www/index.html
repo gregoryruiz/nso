@@ -23,7 +23,11 @@
 
   =====================================================
   -->
-  <ui-view></ui-view>
+  <nso-app>
+
+    NSO
+
+  </nso-app>
   <!--
   =====================================================
 
@@ -55,16 +59,16 @@
 
   <%
   _(htmlWebpackPlugin.files.chunks)
-    .omit('webpack-loader', 'webfont')
+    .omit('webpack-loader', 'inline')
     .forEach((chunk) => {
   %>
   <script type="text/javascript" src="<%= chunk.entry %>"></script>
   <%}) %>
 
-
   <script type="text/javascript">
-  <%= compilation.assets[htmlWebpackPlugin.files.chunks['webfont'].entry].source() %>
+  <%= compilation.assets[htmlWebpackPlugin.files.chunks['inline'].entry].source() %>
   </script>
+
 
   <!--
   =====================================================

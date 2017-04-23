@@ -1,6 +1,7 @@
 //
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const Visualizer = require('webpack-visualizer-plugin');
 const webpackMerge = require('webpack-merge');
 const { LoaderOptionsPlugin, optimize: { UglifyJsPlugin } } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -19,7 +20,7 @@ exports.default = webpackMerge(
     plugins: [
       new HtmlWebpackPlugin({
         inject: false,
-        template: './src/index.html',
+        template: './src/www/index.html',
         minify: {
 			    collapseWhitespace: true,
 			    conservativeCollapse: true,
@@ -65,7 +66,8 @@ exports.default = webpackMerge(
         new BundleAnalyzerPlugin({
           analyzerMode: 'static',
           openAnalyzer: false
-        })
+        }),
+        new Visualizer()
       ]),
   }
 );

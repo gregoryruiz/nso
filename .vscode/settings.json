@@ -5,6 +5,7 @@
         "**/.git": true,
         "dist/": true,
         "**/node_modules": true,
+        "**/out-tsc": true,
         "**/*.js": {"when": "$(basename).ts"},
         "**/*.css": {"when": "$(basename).scss"},
         "**/*.map": {"when": "$(basename).map"}

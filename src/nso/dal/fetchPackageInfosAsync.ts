@@ -1,5 +1,7 @@
 //
 
+import "isomorphic-fetch";
+
 import { PackageInfos } from "nso/models";
 
 const PACKAGE_FILE_NAME = "package.json";

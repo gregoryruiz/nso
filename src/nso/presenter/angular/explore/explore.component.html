@@ -1,0 +1,15 @@
+<div class="nso-app">
+
+  <nso-omnibox>
+    <input
+      type="search"
+      ng-change="$ctrl.onSearchTermChange($ctrl.searchTerm)"
+      ng-model="$ctrl.searchTerm"
+      ng-model-options="{
+        updateOn: 'default blur',
+        debounce: { 'default': 500, 'blur': 0 }
+      }">
+  </nso-omnibox>
+
+  <ui-view></ui-view>
+</div>

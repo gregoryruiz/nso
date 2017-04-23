@@ -1,15 +1,42 @@
 {
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "browsers": [
+                "last 2 versions"
+              ]
+            },
+            "useBuiltIns": true
+          }
+        ]
+      ]
+    }
+  },
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions"]
-      },
-      "modules": false,
-      "useBuiltIns": true
-    }]
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions"
+          ]
+        },
+        "modules": false,
+        "useBuiltIns": true
+      }
+    ]
   ],
   "plugins": [
     "lodash",
-    ["angularjs-annotate", { "explicitOnly" : true}]
+    [
+      "angularjs-annotate",
+      {
+        "explicitOnly": true
+      }
+    ]
   ]
 }

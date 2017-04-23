@@ -74,3 +74,4 @@ typings/
 # Output of 'npm run watch'
 dist/*
 .awcache
+out-tsc

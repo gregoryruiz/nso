@@ -1,5 +1,29 @@
 //
 
+import { module as ngModule } from "angular";
+
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+
+import { CoreModule } from "./core/core.module";
+import { ExploreModule } from "./explore/explore.module";
+import { SharedModule } from "./shared/shared.module";
+
+//
+
+export const AppModule = ngModule(String(module.id), [
+  // Local modules
+  AppRoutingModule,
+  CoreModule,
+  SharedModule,
+
+  // Routes
+  ExploreModule,
+])
+  .component("nsoApp", AppComponent)
+  .name;
+
+/*
 import { module } from "angular";
 import "angular-ui-router";
 import {
@@ -8,7 +32,6 @@ import {
   isEqual,
 } from "lodash-es";
 
-import { NsoD3GraphDirective } from "nso/nso-d3-graph.component";
 import nsoIndexHTMLTemplate from "nso/nso.module.html";
 import NsoGraphDirective from "nso/nsoGraph.directive";
 
@@ -22,17 +45,11 @@ const STATES = {
     template: nsoIndexHTMLTemplate,
     url: "/",
   },
-  "root.d3": {
+  "root.search": {
     resolve: {
       resolveModuleName,
     },
-    url: "d3/:moduleName",
-  },
-  "root.vis": {
-    resolve: {
-      resolveModuleName,
-    },
-    url: "vis/:moduleName",
+    url: "search/:moduleName",
   },
 };
 
@@ -43,7 +60,6 @@ export default module("nso", [
   .controller("RootController", RootController)
   .config(nsoConfig)
   .service("SearchService", SearchService)
-  .directive("nsoD3Graph", NsoD3GraphDirective)
   .run(exposeToRootScopeRun)
   .run(urlReloadingRun)
   .name;
@@ -104,7 +120,7 @@ function nsoConfig($injector: ng.auto.IInjectorService) {
   each(STATES, (stateConfig, stateName) => $stateProvider.state(stateName, stateConfig));
 
   $urlRouterProvider.otherwise(STATES.root.url);
-  $urlRouterProvider.otherwise("/vis/express");
+  $urlRouterProvider.otherwise("/search/express");
 
   // Change URL without reloading state
   // From https://stackoverflow.com/questions/23585065/angularjs-ui-router-change-url-without-reloading-state
@@ -129,7 +145,7 @@ function urlReloadingRun($injector: ng.auto.IInjectorService) {
      * I use $location and $state as examples, but
      * You can do any logic
      * before syncing OR stop syncing all together.
-     */
+     *
 
     console.log("$locationChangeSuccess", $state.current, newUrl, oldUrl);
 
@@ -149,3 +165,4 @@ function exposeToRootScopeRun($injector: ng.auto.IInjectorService) {
   const $rootScope = $injector.get("$rootScope");
   $rootScope.$state = $injector.get("$state");
 }
+*/
