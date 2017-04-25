@@ -1,6 +1,10 @@
 //
 
-import { Ng1Controller, StateService, Transition } from "angular-ui-router";
+import {
+  Ng1Controller,
+  StateService,
+  Transition,
+} from "angular-ui-router";
 
 import { IExploreRoutingParams } from "./explore-routing.interface";
 

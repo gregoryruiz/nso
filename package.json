@@ -2,7 +2,7 @@
   "name": "nso",
   "version": "0.2.0",
   "description": "NPM Space Observatory",
-  "main": "src/bootrap.ts",
+  "main": "src/www/main.ts",
   "homepage": "https://travis-ci.org/gregoryruiz/nso",
   "scripts": {
     "build:prod": "webpack --config config/webpack.config.prod.js",

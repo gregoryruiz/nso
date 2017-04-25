@@ -1,11 +1,11 @@
 //
 
+import {
+  StateService,
+  Transition,
+} from "angular-ui-router";
 import { test } from "ava";
 import { stub } from "sinon";
-
-import { StateService, Transition } from "angular-ui-router";
-
-//
 
 import { ExploreController } from "./explore.controller";
 
@@ -16,7 +16,7 @@ test("on $onInit set the searchTerm to binded pkg params", async (t) => {
   const $state = {} as StateService;
   const $ctrl = new ExploreController($state);
   $ctrl.$transition$ = {
-    params: stub().returns({pkg: "foo"}),
+    params: stub().returns({ pkg: "foo" }),
   } as any as Transition;
 
   // when
@@ -32,7 +32,7 @@ test("on uiOnParamsChanged set the searchTerm to binded pkg params", async (t) =
   const $ctrl = new ExploreController($state);
 
   // when
-  $ctrl.uiOnParamsChanged({pkg: "bar"});
+  $ctrl.uiOnParamsChanged({ pkg: "bar" });
 
   // then
   t.is($ctrl.searchTerm, "bar");
@@ -42,7 +42,7 @@ test("on onSearchTermChange set go to pkg state", async (t) => {
   // given
   const $state = {
     go: stub(),
-  }  as any as StateService;
+  } as any as StateService;
   const $ctrl = new ExploreController($state);
 
   // when

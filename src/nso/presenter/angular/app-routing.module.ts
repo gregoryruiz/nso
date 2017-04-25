@@ -1,11 +1,14 @@
 //
 
-import {module as ngModule} from "angular";
-import AngularUiRouterModule, { StateProvider, Trace, UrlRouter } from "angular-ui-router";
+import { module as ngModule } from "angular";
+import AngularUiRouterModule, {
+  StateProvider,
+  UrlRouter,
+} from "angular-ui-router";
 
 //
 
-export const AppRoutingModule = ngModule(String(module.id), [
+export const AppRoutingModule: string = ngModule(String(module.id), [
   AngularUiRouterModule,
 ])
   .config(stateProviderConfig)
@@ -14,7 +17,7 @@ export const AppRoutingModule = ngModule(String(module.id), [
 
 //
 
-function stateProviderConfig($stateProvider: StateProvider) {
+function stateProviderConfig($stateProvider: StateProvider): void {
   "ngInject";
 
   $stateProvider.state({
@@ -24,7 +27,7 @@ function stateProviderConfig($stateProvider: StateProvider) {
   });
 }
 
-function urlRouterProviderConfig($urlRouterProvider: UrlRouter) {
+function urlRouterProviderConfig($urlRouterProvider: UrlRouter): void {
   "ngInject";
 
   $urlRouterProvider.otherwise("/explore/express");

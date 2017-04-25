@@ -2,14 +2,17 @@
 
 import { IComponentOptions } from "angular";
 
-import template from "./explore.component.html";
 import { ExploreController } from "./explore.controller";
 
-import "./explore.component.scss";
+import template from "./explore.html";
+import "./explore.scss";
 
 //
 
-export const ExploreComponent: IComponentOptions = {
+export const ExploreComponentName: string =
+  "nsoExplore";
+
+export const ExploreComponentOptions: IComponentOptions = {
   bindings: {
     $transition$: "<",
   },

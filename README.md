@@ -30,4 +30,4 @@ $ npm run serve:prod
 last successful master branch build can be found here: [gregoryruiz.github.io/nso/](https://gregoryruiz.github.io/nso/#!/search/gregory)
 
 ## Credits
-[@douglasduteil](https://github.com/douglasduteil) for his ideas, disponibility, advices, wisdom & friendship.
+[@douglasduteil](https://github.com/douglasduteil) for his ideas, availability, advices, wisdom & friendship.

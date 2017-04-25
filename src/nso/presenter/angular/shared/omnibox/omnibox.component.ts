@@ -1,12 +1,16 @@
 //
 
-import template from "./omnibox.component.html";
+import { IComponentOptions } from "angular";
 
-import "./omnibox.component.scss";
+import template from "./omnibox.html";
+import "./omnibox.scss";
 
 //
 
-export const OmniboxComponent = {
+export const OmniboxComponentName: string =
+  "nsoOmnibox";
+
+export const OmniboxComponentOptions: IComponentOptions = {
   template,
   transclude: true,
 };

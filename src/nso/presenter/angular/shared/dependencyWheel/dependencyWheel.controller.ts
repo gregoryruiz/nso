@@ -1,7 +1,10 @@
 //
 
-import { IAugmentedJQuery, IComponentController, IOnChangesObject } from "angular";
-
+import {
+  IAugmentedJQuery,
+  IComponentController,
+  IOnChangesObject,
+} from "angular";
 import * as d3 from "d3";
 
 //
@@ -232,7 +235,7 @@ const MOCK = [
 
 //
 
-export class HierarchicalEdgeBundlingController implements IComponentController {
+export class DependencyWheelController implements IComponentController {
 
   public cluster: d3.ClusterLayout<INodeDatum>;
   public line: d3.RadialLine<d3.HierarchyPointNode<INodeDatum>>;

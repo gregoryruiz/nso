@@ -1,11 +1,15 @@
 //
 
-import template from "./app.component.html";
+import { IComponentOptions } from "angular";
 
-import "./app.component.scss";
+import template from "./app.html";
+import "./app.scss";
 
 //
 
-export const AppComponent = {
+export const AppComponentName: string =
+  "nsoApp";
+
+export const AppComponentOptions: IComponentOptions = {
   template,
 };

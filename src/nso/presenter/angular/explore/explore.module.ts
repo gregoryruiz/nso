@@ -3,10 +3,13 @@
 import { module as ngModule } from "angular";
 
 import { ExploreRoutingModule } from "./explore-routing.module";
-import { ExploreComponent } from "./explore.component";
+import {
+  ExploreComponentName,
+  ExploreComponentOptions,
+} from "./explore.component";
 
-export const ExploreModule = ngModule(String(module.id), [
+export const ExploreModule: string = ngModule(String(module.id), [
   ExploreRoutingModule,
 ])
-  .component("nsoExplore", ExploreComponent)
+  .component(ExploreComponentName, ExploreComponentOptions)
   .name;

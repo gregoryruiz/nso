@@ -1,6 +1,14 @@
 //
 
-import { bootstrap } from "angular";
-import { AppModule } from "nso/presenter/angular/app.module";
+import {
+  bootstrap,
+  IAngularBootstrapConfig,
+} from "angular";
 
-bootstrap(document, [AppModule], {strictDi: true});
+import { AppModule } from "nso/presenter/angular";
+
+const angularBootstrapConfig: IAngularBootstrapConfig = {
+  strictDi: true,
+};
+
+bootstrap(document, [AppModule], angularBootstrapConfig);

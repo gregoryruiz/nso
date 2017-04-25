@@ -3,24 +3,25 @@
 import { module as ngModule } from "angular";
 import AngularUiRouterModule, { StateProvider, Transition, UrlRouter } from "angular-ui-router";
 
+import { DependencyWheelComponentName } from "nso/presenter/angular/shared";
 import { IExploreRoutingParams } from "./explore-routing.interface";
 
 //
 
 const mockedVertex = {
-  nodes: [
-    {
-      key: "foo",
-    },
-  ],
   edges: [
     {
 
     },
   ],
+  nodes: [
+    {
+      key: "foo",
+    },
+  ],
 };
 
-export const ExploreRoutingModule = ngModule(String(module.id), [
+export const ExploreRoutingModule: string = ngModule(String(module.id), [
   AngularUiRouterModule,
 ])
   .config(stateProviderConfig)
@@ -57,7 +58,7 @@ function stateProviderConfig($stateProvider: StateProvider) {
   });
 
   $stateProvider.state({
-    component: "nsoHierarchicalEdgeBundling",
+    component: DependencyWheelComponentName,
     name: "explore.pkg.dependencyGraph",
     resolve: {
       vertex: vertexResolver,

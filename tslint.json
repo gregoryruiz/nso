@@ -1,5 +1,13 @@
 {
   "extends": [
     "tslint:latest"
-  ]
+  ],
+  "rules": {
+    "max-line-length": [
+      false
+    ],
+    "no-console": [
+      "debug"
+    ]
+  }
 }
