@@ -21,7 +21,7 @@ const mockedVertex = {
   ],
 };
 
-export const ExploreRoutingModule: string = ngModule(String(module.id), [
+export const ExploreRoutingModule: string = ngModule(module.id, [
   AngularUiRouterModule,
 ])
   .config(stateProviderConfig)

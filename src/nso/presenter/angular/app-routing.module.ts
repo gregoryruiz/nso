@@ -8,7 +8,7 @@ import AngularUiRouterModule, {
 
 //
 
-export const AppRoutingModule: string = ngModule(String(module.id), [
+export const AppRoutingModule: string = ngModule(module.id, [
   AngularUiRouterModule,
 ])
   .config(stateProviderConfig)

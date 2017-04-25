@@ -12,7 +12,7 @@ import { SharedModule } from "./shared/shared.module";
 
 //
 
-export const AppModule: string = ngModule(String(module.id), [
+export const AppModule: string = ngModule(module.id, [
   // Local modules
   AppRoutingModule,
   SharedModule,

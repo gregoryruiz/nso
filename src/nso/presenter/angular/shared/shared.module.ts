@@ -13,7 +13,7 @@ import {
 
 //
 
-export const SharedModule: string = ngModule(String(module.id), [])
+export const SharedModule: string = ngModule(module.id, [])
   .component(OmniboxComponentName, OmniboxComponentOptions)
   .component(DependencyWheelComponentName, DependencyWheelComponentOptions)
   .name;

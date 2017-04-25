@@ -8,7 +8,7 @@ import {
   ExploreComponentOptions,
 } from "./explore.component";
 
-export const ExploreModule: string = ngModule(String(module.id), [
+export const ExploreModule: string = ngModule(module.id, [
   ExploreRoutingModule,
 ])
   .component(ExploreComponentName, ExploreComponentOptions)
