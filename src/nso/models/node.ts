@@ -1,15 +1,17 @@
 //
 
-import { NodeColor } from "nso/models";
+export interface INode {
+  id?: number;
+  label?: string;
+}
 
-/**
- * nso.model.Node
- */
-export interface Node extends vis.Node {
-    _depth?: number;
-    _dependencyCount?: number;
-    _dependentCount?: number;
-    mass?: number;
-    color?: NodeColor;
-    value?: number;
+export interface IEdge {
+  id?: number;
+  from?: number;
+  to?: number;
+}
+
+export interface IData {
+  nodes?: INode[];
+  edges?: IEdge[];
 }

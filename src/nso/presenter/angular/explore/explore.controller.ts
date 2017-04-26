@@ -27,6 +27,7 @@ export class ExploreController implements Ng1Controller {
 
   public onSearchTermChange(newTerm) {
     // When the user change the input in the view
+    console.log("onSearchTermChange", newTerm);
     this.$state.go(".", { pkg: newTerm });
   }
 
@@ -39,6 +40,7 @@ export class ExploreController implements Ng1Controller {
 
   public uiOnParamsChanged(newParams: IExploreRoutingParams) {
     // When the url change
+    console.log("uiOnParamsChanged", newParams.pkg);
     this.searchTerm = newParams.pkg;
   }
 

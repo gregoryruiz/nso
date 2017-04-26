@@ -1,6 +1,6 @@
 {
   "name": "nso",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "NPM Space Observatory",
   "main": "src/www/main.ts",
   "homepage": "https://travis-ci.org/gregoryruiz/nso",

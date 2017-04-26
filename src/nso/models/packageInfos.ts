@@ -1,14 +1,22 @@
 //
 
+import {
+  BugInfos,
+  PeopleInfos,
+  RepositoryInfos,
+} from "nso/models";
+
 export interface PackageInfos {
   name: string;
-  repository?: string;
-  license?: string;
-  homepage?: string;
-  author?: string;
-  contributors?: string[];
-  dependencies?: any;
-  devDependencies?: any;
+  version: string;
   description?: string;
-  version?: string;
+  keywords?: string[];
+  homepage?: string;
+  bugs?: BugInfos | string;
+  license?: string;
+  author?: PeopleInfos | string;
+  contributors?: PeopleInfos[] | string[];
+  repository?: RepositoryInfos | string;
+  dependencies?: {};
+  devDependencies?: {};
 }

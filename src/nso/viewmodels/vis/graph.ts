@@ -5,7 +5,7 @@ import { Network } from "vis";
 import { fetchPackageInfosAsync } from "nso/dal";
 import {
   Data,
-  Node,
+  IVisNode,
   NODE_DEFAULT_COLOR,
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
@@ -36,7 +36,7 @@ export class Graph {
   }
 
   public drawDependenciesFrom(rootModuleName: string) {
-    const rootNode: Node = {
+    const rootNode: IVisNode = {
       _dependencyCount: 0,
       _dependentCount: 0,
       _depth: 0,
@@ -63,14 +63,14 @@ export class Graph {
     this.network = null;
   }
 
-  private getScale = (node: Node) => node._dependencyCount + node._dependentCount;
+  private getScale = (node: IVisNode) => node._dependencyCount + node._dependentCount;
 
   private onNetworkStabilized = (params?: any) => {
     console.log("stabilized");
     this.network.fit();
   }
 
-  private dependencyFetching(node: Node): Promise<void> {
+  private dependencyFetching(node: IVisNode): Promise<void> {
     const fetchingDepth = node._depth + 1;
     return Promise.resolve(node)
       .then((res) => {
@@ -171,7 +171,7 @@ export class Graph {
             return memo;
           }, {
             edges: [] as vis.EdgeOptions[],
-            nodes: [] as Node[],
+            nodes: [] as IVisNode[],
           });
       });
   }

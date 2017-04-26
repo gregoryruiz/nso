@@ -1,8 +1,11 @@
 {
   "extends": [
-    "tslint:latest"
+    "tslint:recommended"
   ],
   "rules": {
+    "interface-name": [
+      "always-prefix"
+    ],
     "max-line-length": [
       false
     ],
