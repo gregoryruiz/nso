@@ -9,32 +9,8 @@ const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loade
 //
 
 const isInNodeModules = (module) => module.context && module.context.indexOf("node_modules") !== -1;
-const isInBabelPolyfillModule = (module) => module.context && module.context.indexOf("babel-polyfill") !== -1;
-const isInCoreJsModule = (module) => module.context && module.context.indexOf("core-js") !== -1;
-const isInRegeneratorRuntimeModule = (module) => module.context && module.context.indexOf("regenerator-runtime") !== -1;
-const isInPolyfillsCommonChunk = (module) => true &&
-  (
-    isInBabelPolyfillModule(module) ||
-    isInCoreJsModule(module) ||
-    isInRegeneratorRuntimeModule(module)
-  ) &&
-  isInNodeModules(module);
-
-const isInWebpackHotReloadCommonChunk = (module) => module.resource &&
-  /node_modules\/ansi-/.test(module.resource) ||
-  /node_modules\/debug/.test(module.resource) ||
-  /node_modules\/buffer/.test(module.resource) ||
-  /node_modules\/process/.test(module.resource) ||
-  /node_modules\/events/.test(module.resource) ||
-  /node_modules\/html-entities/.test(module.resource) ||
-  /node_modules\/inherits/.test(module.resource) ||
-  /node_modules\/punycode/.test(module.resource) ||
-  /node_modules\/querystring/.test(module.resource) ||
-  /node_modules\/sockjs/.test(module.resource) ||
-  /node_modules\/strip/.test(module.resource) ||
-  /node_modules\/url/.test(module.resource) ||
-  /node_modules\/json3/.test(module.resource) ||
-  /node_modules\/webpack/.test(module.resource);
+const isInCoreJsModule = (module) => module.context && module.context.indexOf("code-js") !== -1;
+const isInPolyfillsCommonChunk = (module) => isInNodeModules(module) && isInCoreJsModule(module);
 
 //
 
@@ -46,10 +22,7 @@ exports.default = {
     inline: [
       './src/www/inline.ts'
     ],
-    main: [
-      'babel-polyfill',
-      './src/www/main.ts'
-    ]
+    bootstrap: ['babel-polyfill', './src/www/main.ts']
   },
 
   //
@@ -123,7 +96,6 @@ exports.default = {
   output: {
     path: resolve(__dirname, '../dist'),
     filename: '[name].[chunkhash:8].js',
-    chunkFilename: '[id].chunkhash:8].chunk.js'
   },
 
   //
@@ -140,18 +112,10 @@ exports.default = {
       name: 'vendor',
       minChunks: isInNodeModules
     }),
-
     new CommonsChunkPlugin({
       name: 'polyfills',
       minChunks: isInPolyfillsCommonChunk
     }),
-
-    new CommonsChunkPlugin({
-      name: 'webpack',
-      chunks: ['vendor'],
-      minChunks: isInWebpackHotReloadCommonChunk
-    }),
-
     new CommonsChunkPlugin('webpack-loader')
   ]
     // Don't use progess plugin on Travis
@@ -161,9 +125,12 @@ exports.default = {
 
   resolve: {
     extensions: ['.js', '.ts'],
+    plugins: [
+        new TsConfigPathsPlugin(/* { tsconfig, compiler } */)
+    ],
     modules: [
       "node_modules",
-      resolve(__dirname, '../src')
+      resolve(__dirname, 'src')
     ],
   }
 };

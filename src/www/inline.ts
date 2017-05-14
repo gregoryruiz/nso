@@ -2,14 +2,6 @@
 
 import "./base.scss";
 
-//
-
-const WebFontConfig = {
-  google: {
-    families: ["Roboto"],
-  },
-};
-
 const webfontScriptEl = document.createElement("script");
 webfontScriptEl.src = "https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js";
 webfontScriptEl.type = "text/javascript";

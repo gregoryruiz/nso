@@ -10,8 +10,6 @@ import {
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
   NODE_ROOT_COLOR,
-  NodeColor,
-  PackageInfos,
 } from "nso/models";
 import { DEFAULT_GRAPH_OPTIONS } from "nso/viewmodels/vis";
 
@@ -147,7 +145,7 @@ export class Graph {
 
   }
 
-  private _describeNewData(dependencies) {
+  private _describeNewData(dependencies: any) {
     return Promise.resolve()
       .then(() => {
         return Object.entries(dependencies)

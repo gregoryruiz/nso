@@ -13,11 +13,11 @@ import {
   INode,
   INodeDatum,
 } from "nso/models";
-import {
-  fetchRawDatas,
-  IRawData,
-} from "./dependencyWheel.mocks";
 //
+
+interface IMap {
+  [key: string]: any;
+}
 
 const INNER_RADIUS_RATIO: number = 0.875;
 const BUNDLE_STRENGTH_RATIO: number = 0.95;
@@ -138,7 +138,7 @@ export class DependencyWheelController implements IController {
 
   // Lazily construct the package hierarchy from raw infos.
   private packageHierarchy(vertex: IData): INodeDatum {
-    const map = {};
+    const map: IMap = {};
 
     const distinctTos = Array.from(new Set<number>(vertex.edges.map((e) => e.to)));
     const rootNodeId = vertex.nodes.map((n) => n.id).filter((item) => !distinctTos.includes(item))[0];
@@ -174,7 +174,7 @@ export class DependencyWheelController implements IController {
 
   // Return a list of imports for the given array of nodes.
   private packageImports(nodes: Array<d3.HierarchyNode<INodeDatum>>): ILinkDatum[] {
-    const map = {};
+    const map: IMap = {};
     const links = new Array<ILinkDatum>();
 
     // Compute a map from name to node.

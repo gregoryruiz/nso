@@ -65,11 +65,10 @@
   <script type="text/javascript" src="<%= chunk.entry %>"></script>
   <%}) %>
 
-  <script type="text/javascript">
+
+ <script type="text/javascript">
   <%= compilation.assets[htmlWebpackPlugin.files.chunks['inline'].entry].source() %>
   </script>
-
-
   <!--
   =====================================================
 

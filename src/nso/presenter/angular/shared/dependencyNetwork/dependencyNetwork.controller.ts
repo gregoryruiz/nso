@@ -1,7 +1,6 @@
 //
 
 import {
-  IAugmentedJQuery,
   IController,
   IOnChangesObject,
 } from "angular";

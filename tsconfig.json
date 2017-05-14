@@ -4,7 +4,10 @@
     "baseUrl": "src",
     "module": "es2015",
     "moduleResolution": "node",
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "strictNullChecks": false,
     "outDir": "out-tsc",
     "skipLibCheck": true,
     "sourceMap": true,
@@ -15,6 +18,15 @@
       "es2015",
       "es2016",
       "es2017"
+    ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "types": [
+      "angular",
+      "mocha",
+      "node",
+      "d3"
     ]
   },
   "include": [

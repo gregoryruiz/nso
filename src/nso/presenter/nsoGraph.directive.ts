@@ -1,6 +1,11 @@
 //
 
-import { module } from "angular";
+import {
+  IAttributes,
+  IAugmentedJQuery,
+  IScope,
+  module,
+} from "angular";
 import {
   isEmpty,
   isEqual,
@@ -28,10 +33,10 @@ function nsoGraphDirective() {
     restrict: "E",
   };
 
-  function nsoGraphDirectiveLink(scope, iElement, iAttrs) {
+  function nsoGraphDirectiveLink(scope: IScope, iElement: IAugmentedJQuery, iAttrs: IAttributes) {
     let graph = new Graph(iElement[0]);
 
-    iAttrs.$observe("moduleName", (newValue, oldValue) => {
+    iAttrs.$observe("moduleName", ((newValue: any, oldValue: any) => {
       if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
         return;
       }
@@ -41,17 +46,17 @@ function nsoGraphDirective() {
       graph = new Graph(iElement[0]);
       graph.drawDependenciesFrom(newValue);
 
-    });
+    }) as any);
 
-    iAttrs.$observe("nodeScale", (newValue, oldValue) => {
+    iAttrs.$observe("nodeScale", ((newValue: any, oldValue: any) => {
       if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
         return;
       }
       // graph.setNetworkOptions();
       // console.log('Scale with', graph.network, newValue)
-    });
+    }) as any);
 
-    scope.$watch(iAttrs["networkOptions"], (newValue, oldValue) => {
+    scope.$watch(iAttrs.networkOptions, (newValue, oldValue) => {
       if (isEmpty(newValue) || isEqual(newValue, oldValue)) {
         return;
       }
