@@ -25,7 +25,7 @@ export class ExploreController implements Ng1Controller {
 
   //
 
-  public onSearchTermChange(newTerm) {
+  public onSearchTermChange(newTerm: any) {
     // When the user change the input in the view
     console.log("onSearchTermChange", newTerm);
     this.$state.go(".", { pkg: newTerm });
