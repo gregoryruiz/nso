@@ -15,6 +15,7 @@ exports.default = webpackMerge(
   {
     devServer: {
       compress: true,
+      stats: 'minimal',
       contentBase: resolve(__dirname, 'public'),
       historyApiFallback: true,
       watchContentBase: true
