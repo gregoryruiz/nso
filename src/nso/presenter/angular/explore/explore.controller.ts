@@ -4,7 +4,7 @@ import {
   Ng1Controller,
   StateService,
   Transition,
-} from "angular-ui-router";
+} from "@uirouter/angularjs";
 
 import { IExploreRoutingParams } from "./explore-routing.interface";
 
