@@ -1,10 +1,10 @@
 //
 
-import { module as ngModule } from "angular";
 import AngularUiRouterModule, {
   StateProvider,
   UrlRouter,
-} from "angular-ui-router";
+} from "@uirouter/angularjs";
+import { module as ngModule } from "angular";
 
 //
 

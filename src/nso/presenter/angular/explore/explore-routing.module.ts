@@ -1,11 +1,11 @@
 //
 
-import { module as ngModule } from "angular";
 import AngularUiRouterModule, {
   StateProvider,
   Transition,
   UrlRouter,
-} from "angular-ui-router";
+} from "@uirouter/angularjs";
+import { module as ngModule } from "angular";
 
 import { fetchPackageInfosAsync } from "nso/dal";
 import {

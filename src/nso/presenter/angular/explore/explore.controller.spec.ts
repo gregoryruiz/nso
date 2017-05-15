@@ -3,7 +3,7 @@
 import {
   StateService,
   Transition,
-} from "angular-ui-router";
+} from "@uirouter/angularjs";
 import { test } from "ava";
 import { stub } from "sinon";
 
