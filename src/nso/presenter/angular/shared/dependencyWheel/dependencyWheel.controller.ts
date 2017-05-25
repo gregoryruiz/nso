@@ -20,6 +20,7 @@ import { IRawData } from "./dependencyWheel.mocks";
 const INNER_RADIUS_RATIO: number = 0.875;
 const BUNDLE_STRENGTH_RATIO: number = 0.95;
 const DIAMETER: number = Math.min(window.innerHeight, window.innerWidth) * INNER_RADIUS_RATIO;
+
 export class DependencyWheelController implements IController {
 
   public vertex: IData;
@@ -59,11 +60,11 @@ export class DependencyWheelController implements IController {
     }
 
     console.log("vertex", this.vertex);
-    const remainingNodes = this.vertex.nodes.reduce((memo, {label, id}) => {
+    const remainingNodes = this.vertex.nodes.reduce((memo, { label, id }) => {
       memo[label] = -1;
       return memo;
-    }, {} as {[label: string]: number});
-    const findById = (id: number) => (data: {id: number}) => data.id === id;
+    }, {} as { [label: string]: number });
+    const findById = (id: number) => (data: { id: number }) => data.id === id;
     const add = (memo: any, node: any) => {
       const rawData: IRawData = {
         imports: [],
@@ -86,9 +87,9 @@ export class DependencyWheelController implements IController {
 
       const toNodeIndex = remainingNodes[toNode.label];
       if (toNodeIndex < 0) {
-        remainingNodes[toNode.label] = add(memo, {label: toNode.label}) - 1;
+        remainingNodes[toNode.label] = add(memo, { label: toNode.label }) - 1;
       } else {
-         // memo[toNodeIndex].imports.push(toNode.label);
+        // memo[toNodeIndex].imports.push(toNode.label);
       }
 
       return memo;
@@ -117,7 +118,7 @@ export class DependencyWheelController implements IController {
 
     this.node = this.node
       // .data(nodes.filter((n) => !n.children))
-    .data(root.leaves())
+      .data(root.leaves())
       .enter()
       .append("text")
       .attr("class", (d, i) => i === 0 ? "node node--origin" : "node")
@@ -148,7 +149,7 @@ export class DependencyWheelController implements IController {
   }
 
   private transform = (d: d3.HierarchyPointNode<any>) => {
-    return"rotate(" + (d.x - 90) + ") translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : " rotate(180)");
+    return "rotate(" + (d.x - 90) + ") translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : " rotate(180)");
   }
 
   private onmouseover = (d: any): void => {
@@ -183,13 +184,13 @@ interface IHierarchicalNode extends IRawData {
 
 // Lazily construct the package hierarchy from class names.
 function packageHierarchy(classes: IRawData[]) {
-  const map: {[name: string]: IHierarchicalNode} = {};
+  const map: { [name: string]: IHierarchicalNode } = {};
 
   function find(name: string, data?: IHierarchicalNode) {
     let hierarchicalNode = map[name];
     let i;
     if (!hierarchicalNode) {
-      hierarchicalNode = map[name] = data || {name, children: []} as IHierarchicalNode;
+      hierarchicalNode = map[name] = data || { name, children: [] } as IHierarchicalNode;
 
       if (name.length) {
         hierarchicalNode.parent = find(name.substring(0, i = name.lastIndexOf(".")));
@@ -213,7 +214,7 @@ function packageImports(nodes: Array<d3.HierarchyNode<IHierarchicalNode>>) {
   const map = nodes.reduce((memo, d) => {
     memo[d.data.name] = d;
     return memo;
-  }, {} as {[name: string]: typeof nodes[0]});
+  }, {} as { [name: string]: typeof nodes[0] });
 
   // For each import, construct a link from the source to target node.
   const imports = nodes
