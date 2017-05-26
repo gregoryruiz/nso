@@ -1,8 +1,6 @@
-export interface IRawData {
-  name: string;
-  size: number;
-  imports: string[];
-}
+import {
+  IRawData,
+} from "nso/models/d3";
 
 export function fetchRawDatas(): IRawData[] {
   return [

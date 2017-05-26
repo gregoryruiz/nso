@@ -4,13 +4,13 @@ import { Network } from "vis";
 
 import { fetchPackageInfosAsync } from "nso/dal";
 import {
-  Data,
-  IVisNode,
+  INodeDatum,
   NODE_DEFAULT_COLOR,
   NODE_FAIL_COLOR,
   NODE_LOADING_COLOR,
   NODE_ROOT_COLOR,
-} from "nso/models";
+  Vertex,
+} from "nso/models/vis";
 import { DEFAULT_GRAPH_OPTIONS } from "nso/viewmodels/vis";
 
 export class Graph {
@@ -19,7 +19,7 @@ export class Graph {
   constructor(
     element: HTMLElement,
     private labelStore: string[] = [],
-    private data: Data = new Data(),
+    private data: Vertex = new Vertex(),
     private networkOptions: vis.Options = DEFAULT_GRAPH_OPTIONS) {
 
     this.network = new Network(
@@ -34,7 +34,7 @@ export class Graph {
   }
 
   public drawDependenciesFrom(rootModuleName: string) {
-    const rootNode: IVisNode = {
+    const rootNode: INodeDatum = {
       _dependencyCount: 0,
       _dependentCount: 0,
       _depth: 0,
@@ -61,14 +61,14 @@ export class Graph {
     this.network = null;
   }
 
-  private getScale = (node: IVisNode) => node._dependencyCount + node._dependentCount;
+  private getScale = (node: INodeDatum) => node._dependencyCount + node._dependentCount;
 
   private onNetworkStabilized = (params?: any) => {
     console.log("stabilized");
     this.network.fit();
   }
 
-  private dependencyFetching(node: IVisNode): Promise<void> {
+  private dependencyFetching(node: INodeDatum): Promise<void> {
     const fetchingDepth = node._depth + 1;
     return Promise.resolve(node)
       .then((res) => {
@@ -169,7 +169,7 @@ export class Graph {
             return memo;
           }, {
             edges: [] as vis.EdgeOptions[],
-            nodes: [] as IVisNode[],
+            nodes: [] as INodeDatum[],
           });
       });
   }

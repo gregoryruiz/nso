@@ -8,13 +8,12 @@ import {
 import * as d3 from "d3";
 
 import {
-  IData,
-  ILinkDatum,
-  INode,
-  INodeDatum,
+  IVertex,
 } from "nso/models";
-
-import { IRawData } from "./dependencyWheel.mocks";
+import {
+  IHierarchicalNode,
+  IRawData,
+} from "nso/models/d3";
 //
 
 const INNER_RADIUS_RATIO: number = 0.875;
@@ -23,7 +22,7 @@ const DIAMETER: number = Math.min(window.innerHeight, window.innerWidth) * INNER
 
 export class DependencyWheelController implements IController {
 
-  public vertex: IData;
+  public vertex: IVertex;
   private diameter = DIAMETER;
   private radius = this.diameter / 2;
   private innerRadius = this.radius * INNER_RADIUS_RATIO;
@@ -174,12 +173,6 @@ export class DependencyWheelController implements IController {
       .classed("node--target", false)
       .classed("node--source", false);
   }
-}
-
-interface IHierarchicalNode extends IRawData {
-  children: IHierarchicalNode[];
-  parent: IHierarchicalNode;
-  key: string;
 }
 
 // Lazily construct the package hierarchy from class names.

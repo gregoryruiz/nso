@@ -1,4 +1,5 @@
+export * from "./hierarchicalNode";
 export * from "./linkDatum";
-export * from "./map";
 export * from "./nodeDatum";
+export * from "./rawData";
 export * from "./vertex";

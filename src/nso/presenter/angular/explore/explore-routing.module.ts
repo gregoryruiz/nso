@@ -9,9 +9,9 @@ import { module as ngModule } from "angular";
 
 import { fetchPackageInfosAsync } from "nso/dal";
 import {
-  IData,
-  IEdge,
-  INode,
+  ILinkDatum,
+  INodeDatum,
+  IVertex,
 } from "nso/models";
 import {
   DependencyNetworkComponentName,
@@ -33,13 +33,13 @@ export const ExploreRoutingModule: string = ngModule(module.id, [
 function stateProviderConfig($stateProvider: StateProvider) {
   "ngInject";
 
-  const vertexResolver: ($transition$: Transition) => Promise<IData> = (
+  const vertexResolver: ($transition$: Transition) => Promise<IVertex> = (
     // TODO(@douglasduteil): inject a vertex getter
     $transition$: Transition,
   ) => {
     "ngInject";
     const params: IExploreRoutingParams = $transition$.params();
-    const graphDatas: IData = { nodes: new Array<INode>(), edges: new Array<IEdge>() };
+    const graphDatas: IVertex = { nodes: new Array<INodeDatum>(), edges: new Array<ILinkDatum>() };
 
     return GraphDatas.processGraphDatas(params.pkg, graphDatas)
       // .then(() => {
@@ -87,14 +87,14 @@ function urlRouterProviderConfig($urlRouterProvider: UrlRouter) {
 }
 
 class GraphDatas {
-  public static data: IData;
+  public static data: IVertex;
 
-  public static processGraphDatas(packageName: string, data: IData): Promise<INode> {
+  public static processGraphDatas(packageName: string, data: IVertex): Promise<INodeDatum> {
     GraphDatas.data = data;
     return Promise
       .resolve(packageName)
       .then((pkg) => {
-        let node: INode;
+        let node: INodeDatum;
         if (!GraphDatas.nodeMap.has(pkg)) {
           const nodeId = GraphDatas.nodeLabels.push(pkg);
           node = { id: nodeId, label: pkg };
@@ -107,17 +107,17 @@ class GraphDatas {
       })
       .then(GraphDatas.fetchDependencies)
       // .then(GraphDatas.fetchDevDependencies)
-    ;
+      ;
   }
 
-  private static nodeMap = new Map<string, INode>();
+  private static nodeMap = new Map<string, INodeDatum>();
   private static nodeLabels = new Array<string>();
 
   private static processDescendants(dependencies: {}) {
     return Promise.resolve()
       .then(() => {
         return Object.entries(Object.assign({}, dependencies)).reduce((memo, [dependencyName]) => {
-          let node: INode;
+          let node: INodeDatum;
           if (!GraphDatas.nodeMap.has(dependencyName)) {
             const nodeId = GraphDatas.nodeLabels.push(dependencyName);
             node = { id: nodeId, label: dependencyName };
@@ -127,18 +127,18 @@ class GraphDatas {
             node = GraphDatas.nodeMap.get(dependencyName);
           }
 
-          const edge: IEdge = { to: node.id };
+          const edge: ILinkDatum = { to: node.id };
           edge.id = memo.edges.push(edge);
 
           return memo;
         }, {
-            edges: [] as IEdge[],
-            nodes: [] as INode[],
+            edges: [] as ILinkDatum[],
+            nodes: [] as INodeDatum[],
           });
       });
   }
 
-  private static fetchDependencies(node: INode): Promise<INode> {
+  private static fetchDependencies(node: INodeDatum): Promise<INodeDatum> {
     console.time(`fetchDependencies for ${node.label}`);
     return Promise.resolve(node)
       .then((res) => {
@@ -166,7 +166,7 @@ class GraphDatas {
       ;
   }
 
-  private static fetchDevDependencies(node: INode): Promise<INode> {
+  private static fetchDevDependencies(node: INodeDatum): Promise<INodeDatum> {
     console.time(`fetchDevDependencies for ${node.label}`);
     return Promise.resolve(node)
       .then((res) => {

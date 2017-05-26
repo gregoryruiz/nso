@@ -3,7 +3,7 @@
 import {
   NODE_DEFAULT_COLOR,
   NODE_SELECTED_COLOR,
-} from "nso/models";
+} from "nso/models/vis";
 
 export const DEFAULT_GRAPH_OPTIONS: vis.Options = {
 
