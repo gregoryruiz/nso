@@ -39,7 +39,7 @@ function stateProviderConfig($stateProvider: StateProvider) {
   ) => {
     "ngInject";
     const params: IExploreRoutingParams = $transition$.params();
-    const graphDatas: IVertex = { nodes: new Array<INodeDatum>(), edges: new Array<ILinkDatum>() };
+    const graphDatas: IVertex = { nodes: new Array<INodeDatum>(), links: new Array<ILinkDatum>() };
 
     return GraphDatas.processGraphDatas(params.pkg, graphDatas)
       // .then(() => {
@@ -148,7 +148,7 @@ class GraphDatas {
       .then(({ nodes: newNodes, edges: newEdges }) => {
         GraphDatas.data.nodes.push(...newNodes);
         newEdges.forEach((newEdge) => newEdge.from = node.id);
-        GraphDatas.data.edges.push(...newEdges);
+        GraphDatas.data.links.push(...newEdges);
 
         return newNodes;
       })
@@ -176,7 +176,7 @@ class GraphDatas {
       .then(({ nodes: newNodes, edges: newEdges }) => {
         GraphDatas.data.nodes.push(...newNodes);
         newEdges.forEach((newEdge) => newEdge.from = node.id);
-        GraphDatas.data.edges.push(...newEdges);
+        GraphDatas.data.links.push(...newEdges);
 
         return newNodes;
       })

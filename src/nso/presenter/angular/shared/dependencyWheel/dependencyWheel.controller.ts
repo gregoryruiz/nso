@@ -11,9 +11,11 @@ import {
   IVertex,
 } from "nso/models";
 import {
-  IHierarchicalNode,
+  INodeColor,
+  INodeDatum,
   IRawData,
 } from "nso/models/d3";
+
 //
 
 const INNER_RADIUS_RATIO: number = 0.875;
@@ -23,21 +25,25 @@ const DIAMETER: number = Math.min(window.innerHeight, window.innerWidth) * INNER
 export class DependencyWheelController implements IController {
 
   public vertex: IVertex;
+
+  //
+
   private diameter = DIAMETER;
   private radius = this.diameter / 2;
   private innerRadius = this.radius * INNER_RADIUS_RATIO;
-  private cluster = d3.cluster<IHierarchicalNode>()
+  private cluster = d3.cluster<INodeDatum>()
     .size([360, this.innerRadius]);
-  private line = d3.radialLine<any>()
+  private line = d3.radialLine<d3.HierarchyPointNode<INodeDatum>>()
+    .curve(d3.curveBundle.beta(BUNDLE_STRENGTH_RATIO))
     .radius((d) => d.y)
     .angle((d) => d.x / 180 * Math.PI)
-    .curve(d3.curveBundle.beta(BUNDLE_STRENGTH_RATIO));
-
+  ;
   private svgElement: Element;
+  // TODO find a way to declare (ie type)
   private link = d3.select(this.svgElement)
     .append("g")
     .selectAll(".link");
-
+  // TODO find a way to declare (ie type)
   private node = d3.select(this.svgElement)
     .append("g")
     .selectAll(".node");
@@ -54,61 +60,49 @@ export class DependencyWheelController implements IController {
 
   public $onChanges(onChangesObj: IOnChangesObject) {
     if (!this.cluster) {
-      // No cluster, No render
-      return;
+      return; // No cluster, No render
     }
 
-    console.log("vertex", this.vertex);
     const remainingNodes = this.vertex.nodes.reduce((memo, { label, id }) => {
       memo[label] = -1;
       return memo;
     }, {} as { [label: string]: number });
     const findById = (id: number) => (data: { id: number }) => data.id === id;
-    const add = (memo: any, node: any) => {
-      const rawData: IRawData = {
-        imports: [],
-        name: node.label,
+    const add = (memo: IRawData[], name: string) => {
+      return memo.push({
+        imports: new Array<string>(),
+        name,
         size: 0,
-      };
-
-      return memo.push(rawData);
+      });
     };
-    const formatedData = this.vertex.edges.reduce((memo, edge) => {
+    const formatedData = this.vertex.links.reduce((memo, edge) => {
 
       const fromNode = this.vertex.nodes.find(findById(edge.from));
       const toNode = this.vertex.nodes.find(findById(edge.to));
 
       let fromNodeIndex = remainingNodes[fromNode.label];
       if (fromNodeIndex < 0) {
-        fromNodeIndex = remainingNodes[fromNode.label] = add(memo, fromNode) - 1;
+        fromNodeIndex = remainingNodes[fromNode.label] = add(memo, fromNode.label) - 1;
       }
       memo[fromNodeIndex].imports.push(toNode.label);
 
       const toNodeIndex = remainingNodes[toNode.label];
       if (toNodeIndex < 0) {
-        remainingNodes[toNode.label] = add(memo, { label: toNode.label }) - 1;
-      } else {
-        // memo[toNodeIndex].imports.push(toNode.label);
+        remainingNodes[toNode.label] = add(memo, toNode.label) - 1;
       }
 
       return memo;
     }, [] as IRawData[]);
 
-    console.log("formatedData", formatedData);
-    console.log("remainingNodes", remainingNodes);
-    // const formatedData = fetchRawDatas(); // this.packageHierarchy(this.vertex);
+    const root = this.cluster(this.packageHierarchy(formatedData).sum((d) => d.size));
 
-    const root = packageHierarchy(formatedData);
-
-    this.cluster(root);
-
-    const links = packageImports(root.leaves());
+    const links = this.packageImports(root.leaves());
 
     this.link = this.link
       .data(links)
       .enter()
       .append("path")
-      .each((d: any) => {
+      .each((d: any[] & d3.HierarchyPointLink<any>) => {
         d.source = d[0];
         d.target = d[d.length - 1];
       })
@@ -116,14 +110,13 @@ export class DependencyWheelController implements IController {
       .attr("d", this.line);
 
     this.node = this.node
-      // .data(nodes.filter((n) => !n.children))
       .data(root.leaves())
       .enter()
       .append("text")
       .attr("class", (d, i) => i === 0 ? "node node--origin" : "node")
       .attr("dy", ".31em")
       .attr("transform", this.transform)
-      .style("text-anchor", (d: any) => d.x < 180 ? "start" : "end")
+      .style("text-anchor", (d) => d.x < 180 ? "start" : "end")
       .text((d) => d.data.key)
       .on("mouseover", this.onmouseover)
       .on("mouseout", this.onmouseout);
@@ -140,28 +133,34 @@ export class DependencyWheelController implements IController {
       .append("g")
       .attr("transform", `translate(${Math.ceil(window.innerWidth / 2)},${Math.ceil(window.innerHeight / 2)})`);
 
-    this.link = stageGroup.append("g").selectAll(".link");
-    this.node = stageGroup.append("g").selectAll(".node");
+    this.link = stageGroup
+      .append("g")
+      .selectAll(".link");
+    this.node = stageGroup
+      .append("g")
+      .selectAll(".node");
 
     // Manual render call
     this.$onChanges({});
   }
 
-  private transform = (d: d3.HierarchyPointNode<any>) => {
+  private transform = (d: d3.HierarchyPointNode<INodeDatum>): string => {
     return "rotate(" + (d.x - 90) + ") translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : " rotate(180)");
   }
 
-  private onmouseover = (d: any): void => {
+  private onmouseover = (d: d3.HierarchyPointNode<INodeDatum> & d3.HierarchyPointLink<INodeDatum>): void => {
     this.node
-      .each((n: any) => { n.target = n.source = false; });
+      .each((n: INodeColor) => n.target = n.source = false);
 
     this.link
-      .classed("link--target", (l: any) => { if (l.target === d) { return l.source.source = true; } })
-      .classed("link--source", (l: any) => { if (l.source === d) { return l.target.target = true; } });
+      .classed("link--target", (l: d3.HierarchyPointLink<INodeDatum>) => { if (l.target === d) { return l.source.data.source = true; } })
+      .classed("link--source", (l: d3.HierarchyPointLink<INodeDatum>) => { if (l.source === d) { return l.target.data.target = true; } })
+      .filter((l: d3.HierarchyPointLink<INodeDatum>) => l.target === d || l.source === d)
+      .raise();
 
     this.node
-      .classed("node--target", (n: any) => n.target)
-      .classed("node--source", (n: any) => n.source);
+      .classed("node--target", (n: INodeColor) => n.target)
+      .classed("node--source", (n: INodeColor) => n.source);
   }
 
   private onmouseout = (d: any): void => {
@@ -173,47 +172,49 @@ export class DependencyWheelController implements IController {
       .classed("node--target", false)
       .classed("node--source", false);
   }
-}
 
-// Lazily construct the package hierarchy from class names.
-function packageHierarchy(classes: IRawData[]) {
-  const map: { [name: string]: IHierarchicalNode } = {};
+  // Lazily construct the package hierarchy from class names.
+  private packageHierarchy(classes: IRawData[]): d3.HierarchyNode<INodeDatum> {
+    const map = new Map<string, INodeDatum>();
 
-  function find(name: string, data?: IHierarchicalNode) {
-    let hierarchicalNode = map[name];
-    let i;
-    if (!hierarchicalNode) {
-      hierarchicalNode = map[name] = data || { name, children: [] } as IHierarchicalNode;
-
-      if (name.length) {
-        hierarchicalNode.parent = find(name.substring(0, i = name.lastIndexOf(".")));
-        hierarchicalNode.parent.children = hierarchicalNode.parent.children || [];
-        hierarchicalNode.parent.children.push(hierarchicalNode);
-        hierarchicalNode.key = name.substring(i + 1);
+    function find(name: string, data?: INodeDatum) {
+      if (!map.has(name)) {
+        const newNode = {
+          ...{
+            children: new Array<INodeDatum>(),
+            key: name,
+            name,
+          } as INodeDatum,
+          ...data,
+        };
+        if (name.length) {
+          newNode.parent = find("");
+          newNode.parent.children.push(newNode);
+        }
+        map.set(name, newNode);
       }
+      return map.get(name);
     }
-    return hierarchicalNode;
+
+    classes.forEach((d) => { find(d.name, d as INodeDatum); });
+
+    return d3.hierarchy(map.get(""));
   }
 
-  classes.forEach((d) => { find(d.name, d as any); });
+  // Return a list of imports for the given array of nodes.
+  private packageImports(nodes: Array<d3.HierarchyPointNode<INodeDatum>>): Array<Array<d3.HierarchyPointNode<INodeDatum>>> {
 
-  return d3.hierarchy(map[""]);
-}
+    // Compute a map from name to node.
+    const map = new Map<string, d3.HierarchyPointNode<INodeDatum>>();
+    nodes.forEach((n) => map.set(n.data.name, n));
 
-// Return a list of imports for the given array of nodes.
-function packageImports(nodes: Array<d3.HierarchyNode<IHierarchicalNode>>) {
+    // For each import, construct a link from the source to target node.
+    const imports = new Array<Array<d3.HierarchyPointNode<INodeDatum>>>();
+    nodes
+      .filter((d) => d.data.imports)
+      .map((d) => d.data.imports.forEach((i) =>
+        imports.push(map.get(d.data.name).path(map.get(i)))));
 
-  // Compute a map from name to node.
-  const map = nodes.reduce((memo, d) => {
-    memo[d.data.name] = d;
-    return memo;
-  }, {} as { [name: string]: typeof nodes[0] });
-
-  // For each import, construct a link from the source to target node.
-  const imports = nodes
-    .filter((d) => d.data.imports)
-    .map((d) => d.data.imports.map((i) => map[d.data.name].path(map[i])))
-    .reduce((memo, i) => memo.concat(i), []);
-
-  return imports;
+    return imports;
+  }
 }

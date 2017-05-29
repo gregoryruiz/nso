@@ -1,9 +1,12 @@
 //
 
-export interface INodeDatum {
-  name: string;
-  imports: string[];
-  parent?: INodeDatum;
-  children: INodeDatum[];
+import {
+  INodeColor,
+  IRawData,
+} from "nso/models/d3";
+
+export interface INodeDatum extends IRawData, INodeColor {
   key: string;
+  children: INodeDatum[];
+  parent: INodeDatum;
 }

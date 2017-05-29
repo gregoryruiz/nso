@@ -7,5 +7,5 @@ import {
 
 export interface IVertex {
   nodes?: INodeDatum[];
-  edges?: ILinkDatum[];
+  links?: ILinkDatum[];
 }
