@@ -3,7 +3,6 @@
 import {
   IAugmentedJQuery,
   IController,
-  IOnChangesObject,
 } from "angular";
 import * as d3 from "d3";
 
@@ -58,12 +57,12 @@ export class DependencyWheelController implements IController {
 
   //
 
-  public $onChanges(onChangesObj: IOnChangesObject) {
+  public $onChanges() {
     if (!this.cluster) {
       return; // No cluster, No render
     }
 
-    const remainingNodes = this.vertex.nodes.reduce((memo, { label, id }) => {
+    const remainingNodes = this.vertex.nodes.reduce((memo, { label }) => {
       memo[label] = -1;
       return memo;
     }, {} as { [label: string]: number });
@@ -113,7 +112,7 @@ export class DependencyWheelController implements IController {
       .data(root.leaves())
       .enter()
       .append("text")
-      .attr("class", (d, i) => i === 0 ? "node node--origin" : "node")
+      .attr("class", (_, i) => i === 0 ? "node node--origin" : "node")
       .attr("dy", ".31em")
       .attr("transform", this.transform)
       .style("text-anchor", (d) => d.x < 180 ? "start" : "end")
@@ -141,7 +140,7 @@ export class DependencyWheelController implements IController {
       .selectAll(".node");
 
     // Manual render call
-    this.$onChanges({});
+    this.$onChanges();
   }
 
   private transform = (d: d3.HierarchyPointNode<INodeDatum>): string => {
@@ -163,7 +162,7 @@ export class DependencyWheelController implements IController {
       .classed("node--source", (n: INodeColor) => n.source);
   }
 
-  private onmouseout = (d: any): void => {
+  private onmouseout = (): void => {
     this.link
       .classed("link--target", false)
       .classed("link--source", false);

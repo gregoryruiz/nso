@@ -6,7 +6,6 @@ import {
 } from "nso/models/vis";
 
 export const DEFAULT_GRAPH_OPTIONS: vis.Options = {
-
   edges: {
     arrows: {
       from: {
@@ -45,7 +44,7 @@ export const DEFAULT_GRAPH_OPTIONS: vis.Options = {
       face: "Roboto",
     },
     scaling: {
-      customScalingFunction: (min, max, total, value) => value / max,
+      customScalingFunction: (_1, max, _2, value) => (typeof value === "number" && max) ? value / max : 0,
       max: 50,
       min: 10,
     },
