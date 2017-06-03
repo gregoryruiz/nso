@@ -8,4 +8,8 @@ webfontScriptEl.type = "text/javascript";
 webfontScriptEl.async = true;
 
 const fistScriptEl = document.getElementsByTagName("script")[0];
-fistScriptEl.parentNode.insertBefore(webfontScriptEl, fistScriptEl);
+try {
+  (fistScriptEl.parentNode as Node).insertBefore(webfontScriptEl, fistScriptEl);
+} catch (e) {
+  console.error(e);
+}

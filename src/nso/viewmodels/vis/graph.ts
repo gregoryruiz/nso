@@ -14,23 +14,26 @@ import {
 import { DEFAULT_GRAPH_OPTIONS } from "nso/viewmodels/vis";
 
 export class Graph {
-  public network: vis.Network;
+  public network: vis.Network | null;
 
   constructor(
     element: HTMLElement,
     private labelStore: string[] = [],
-    private data: Vertex = new Vertex(),
+    private data: Vertex | null = new Vertex(),
     private networkOptions: vis.Options = DEFAULT_GRAPH_OPTIONS) {
 
     this.network = new Network(
       element,
-      this.data,
+      this.data as Vertex,
       this.networkOptions);
     this.network.on("stabilized", this.onNetworkStabilized);
   }
 
   public setNetworkOptions(options: vis.Options) {
-    this.network.setOptions(Object.assign(this.networkOptions, options));
+    const { network } = this;
+    if (network) {
+      network.setOptions(Object.assign(this.networkOptions, options));
+    }
   }
 
   public drawDependenciesFrom(rootModuleName: string) {
@@ -43,36 +46,51 @@ export class Graph {
       label: rootModuleName,
       mass: 1,
     };
+    const { data, network } = this;
 
-    this.data.nodes.add(rootNode);
+    if (data && data.nodes) {
+      data.nodes.add(rootNode);
+    }
 
     this.dependencyFetching(rootNode)
       .then(() => {
         console.log("Alllllllllllllllllllll doooooooooooooooone !", ...arguments);
-        this.network.fit();
+        return network ? network.fit() : null;
       });
   }
 
   public destroy() {
+    const { network } = this;
     this.clear();
 
     this.data = null;
-    this.network.destroy();
+    if (network) {
+      network.destroy();
+    }
     this.network = null;
   }
 
-  private getScale = (node: INodeDatum) => node._dependencyCount + node._dependentCount;
+  private getScale(node: INodeDatum) {
+    const { _dependencyCount, _dependentCount } = node;
+    if (_dependencyCount && _dependentCount) {
+      return _dependencyCount + _dependentCount;
+    }
+    return 0;
+  }
 
-  private onNetworkStabilized = (params?: any) => {
+  private onNetworkStabilized() {
     console.log("stabilized");
-    this.network.fit();
+    const { network } = this;
+    if (network) {
+      network.fit();
+    }
   }
 
   private dependencyFetching(node: INodeDatum): Promise<void> {
-    const fetchingDepth = node._depth + 1;
+    const fetchingDepth = node._depth ? node._depth + 1 : 1;
     return Promise.resolve(node)
       .then((res) => {
-        return fetchPackageInfosAsync(res.label);
+        return fetchPackageInfosAsync(res.label || "");
       })
       .then((pkg) => {
         if (!this.data) {
@@ -94,10 +112,21 @@ export class Graph {
 
               return newNode;
             });
-            this.data.nodes.add(newNodes);
-            this.data.edges.add(
+            const { data } = this;
+            if (!data) {
+              return newNodes;
+            }
+            const { nodes, edges } = data;
+            if (!nodes || !edges) {
+              return newNodes;
+            }
+
+
+
+            nodes.add(newNodes);
+            edges.add(
               newEdges.map((edge) => {
-                const depNode = this.data.nodes.get(edge.to as vis.IdType);
+                const depNode = nodes.get(edge.to as vis.IdType);
                 // console.log(depNode);
                 node._dependencyCount++;
                 depNode._dependentCount++;
@@ -110,8 +139,8 @@ export class Graph {
                 depNode.mass = 1 + depNodeScale;
                 depNode.value = depNodeScale;
 
-                this.data.nodes.update(node);
-                this.data.nodes.update(depNode);
+                nodes.update(node);
+                nodes.update(depNode);
 
                 edge.from = node.id;
                 return edge;

@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "strictNullChecks": false,
     "outDir": "out-tsc",
     "skipLibCheck": true,
